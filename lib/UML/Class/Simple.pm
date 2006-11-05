@@ -14,7 +14,10 @@ use List::MoreUtils 'any';
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(classes_from_runtime classes_from_files);
+our @EXPORT = qw(
+    classes_from_runtime classes_from_files
+    exclude_by_paths grep_by_paths
+);
 
 our $VERSION = '0.05';
 
@@ -22,13 +25,68 @@ my $tt = Template->new;
 my $dot_template;
 
 sub classes_from_runtime {
-    my ($module, $pattern) = @_;
+    my ($modules, $pattern) = @_;
+    $modules = [$modules] if $modules and !ref $modules;
     $pattern = '' if !defined $pattern;
-    if ($module) {
-        eval "use $module;";
+    for (@$modules) {
+        eval "use $_;";
         if ($@) { carp $@; return (); }
     }
-    grep { /$pattern/ } map { s/^::|::$//g; $_ } _runtime_packages();
+    grep { /$pattern/ } _runtime_packages();
+}
+
+sub _normalize_path ($) {
+    my $path = shift;
+    $path = File::Spec->rel2abs($path);
+    if (File::Spec->case_tolerant()) {
+        $path = lc($path);
+    }
+}
+
+sub exclude_by_paths ($@) {
+    my $rclasses = shift;
+    my @paths = map { _normalize_path($_) } @_;
+    my @res;
+    #_extend_INC();
+    for my $class (@$rclasses) {
+        my $filename = Class::Inspector->resolved_filename($class);
+        if (!$filename && $INC{$class}) {
+            $filename = Class::Inspector->loaded_filename($class);
+        }
+        if (!$filename) { next; }
+        $filename = _normalize_path($filename);
+        #my $value = $INC{$key};
+        if (any { substr($filename, 0, length) eq $_ } @paths) {
+            #warn "!!! ignoring $filename\n";
+            next;
+        }
+        #warn "adding $filename <=> @paths\n";
+        push @res, $class;
+    }
+    @res;
+}
+
+sub grep_by_paths ($@) {
+    my $rclasses = shift;
+    my @paths = map { _normalize_path($_) } @_;
+    my @res;
+    #_extend_INC();
+    for my $class (@$rclasses) {
+        my $filename = Class::Inspector->resolved_filename($class);
+        if (!$filename && $INC{$class}) {
+            $filename = Class::Inspector->loaded_filename($class);
+        }
+        if (!$filename) { next; }
+        $filename = _normalize_path($filename);
+        #my $value = $INC{$key};
+        if (any { substr($filename, 0, length) eq $_ } @paths) {
+            #warn "adding $filename <=> @paths\n";
+            push @res, $class;
+            next;
+        }
+        #warn "!!! ignoring $filename\n";
+    }
+    @res;
 }
 
 sub _runtime_packages {
@@ -44,12 +102,14 @@ sub _runtime_packages {
         _runtime_packages($subpkg_name, $cache);
         $cache->{$subpkg_name} = 1;
     }
-    keys %$cache;
+    map { s/^::|::$//g; $_ } keys %$cache;
 }
 
 sub classes_from_files {
     require PPI;
-    my ($list, $pattern) = @_;
+    my ($list, $pattern, $read_only) = @_;
+    $list = [$list] if $list and !ref $list;
+    $pattern = '' if !defined $pattern;
     my @classes;
     my $cache = {};
     for my $file (@$list) {
@@ -62,8 +122,9 @@ sub classes_from_files {
         my $res = $doc->find('PPI::Statement::Package');
         next if !$res;
         push @classes, map { $_->namespace } @$res;
-        _load_file($file);
+        _load_file($file) if !$read_only;
     }
+    @classes = grep { /$pattern/ } @classes;
     #@classes = sort @classes;
     wantarray ? @classes : \@classes;
 }
@@ -228,11 +289,11 @@ sub _build_dom {
 
 sub _load_file ($) {
     my $file = shift;
-    my $path = File::Spec->rel2abs($file);
+    my $path = _normalize_path($file);
     #warn "!!! >>>> $path\n";
     if ( any { 
-                #warn "<<<<< ", File::Spec->rel2abs($_), "\n";
-                $path eq File::Spec->rel2abs($_);
+                #warn "<<<<< ", _normalize_path($_), "\n";
+                $path eq _normalize_path($_);
              } values %INC ) {
         #carp "!!! Caught duplicate module files: $file ($path)";
         return 1;
@@ -465,7 +526,9 @@ L<http://perlcabal.org/agent/images/fast.png>
 
 =over
 
-=item classes_from_runtime($module_to_load, $regex)
+=item classes_from_runtime($module_to_load, $regex?)
+
+=item classes_from_runtime(\@modules_to_load, $regex?)
 
 Returns a list of class (or package) names by inspecting the perl runtime environment.
 C<$module_to_load> is the I<main> module name to load while C<$regex> is
@@ -473,16 +536,34 @@ a perl regex used to filter out interesting package names.
 
 The second argument can be omitted.
 
-=item classes_from_files(\@pmfiles, $regex)
+=item classes_from_files($pmfile, $regex?)
+
+=item classes_from_files(\@pmfiles, $regex?)
 
 Returns a list of class (or package) names by scanning through the perl source files
 given in the first argument. C<$regex> is used to filter out interesting package names.
 
 The second argument can be omitted.
 
+=item exclude_by_paths
+
+Exclude package names via specifying one or more paths where the corresponding
+modules were installed into. For example:
+
+    @classes = exclude_by_paths(\@classes, 'C:/perl/lib');
+
+    @classes = exclude_by_paths(\@classes, '/home/foo', '/System/Library');
+
+=item grep_by_paths
+
+Filter out package names via specifying one or more paths where the corresponding
+modules were installed into. For instance:
+
+    @classes = grep_by_paths(\@classes, '/home/malon', './blib/lib');
+
 =back
 
-These subroutines are imported by default.
+All these four subroutines are exported by default.
 
 =head1 METHODS
 

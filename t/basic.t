@@ -1,18 +1,31 @@
 use strict;
 use warnings;
 
-use Test::More tests => 30;
+use Test::More tests => 36;
+use Config;
 use UML::Class::Simple;
 #use Data::Dumper::Simple;
 
-use UML::Class::Simple;
-
 my (@classes, $painter);
 
+@classes = classes_from_runtime;
+ok @classes > 5, 'a lot of classes found';
+
+my @classes2 = grep_by_paths(\@classes, 'blib/lib', 'lib');
+is join('', @classes2), 'UML::Class::Simple', 'only this module\'s packages remain';
+
+@classes2 = exclude_by_paths(\@classes, $Config{installsitelib});
+ok @classes2 < @classes, 'only this module\'s packages remain';
+#warn "@classes2";
+
+# [rt.cpan.org #22811] Yanick Champoux
 @classes = classes_from_runtime( 'PPI' );
 ok @classes, 'calling classes_from_runtime with one argument';
 
 @classes = classes_from_runtime("PPI", qr/^PPI::/);
+ok @classes > 5, 'a lot of PPI classes found';
+
+@classes = classes_from_runtime(["PPI"], qr/^PPI::/);
 ok @classes > 5, 'a lot of PPI classes found';
 
 $painter = UML::Class::Simple->new(\@classes);
@@ -37,6 +50,13 @@ is $classes[0], 'PPI::Document', 'PPI Document found (2)';
 
 @classes = classes_from_files(['lib/UML/Class/Simple.pm', 'lib/UML/Class/Simple.pm']);
 is join(' ', @classes), 'UML::Class::Simple UML::Class::Simple', 'classes found';
+
+@classes = classes_from_files(['lib/UML/Class/Simple.pm']);
+is join(' ', @classes), 'UML::Class::Simple', 'classes found';
+
+@classes = classes_from_files('lib/UML/Class/Simple.pm');
+is join(' ', @classes), 'UML::Class::Simple', 'classes found';
+
 $painter = UML::Class::Simple->new(\@classes);
 
 # we can explicitly specify the image size
@@ -61,10 +81,11 @@ is_deeply $dom, {
         { name       => 'UML::Class::Simple',
           methods    => [qw(
                 _as_image _build_dom _gen_paths _load_file
-                _runtime_packages
+                _normalize_path _runtime_packages
                 any as_dom as_dot as_gif as_png carp
-                classes_from_files
-                classes_from_runtime new node_color public_only
+                classes_from_files classes_from_runtime
+                exclude_by_paths grep_by_paths
+                new node_color public_only
                 run3 set_dom set_dot size
                         )],
           properties => [],
@@ -83,8 +104,10 @@ is_deeply $dom, {
     classes => [
         { name       => 'UML::Class::Simple',
           methods    => [qw(
-                any as_dom as_dot as_gif as_png carp classes_from_files
-                classes_from_runtime new node_color public_only
+                any as_dom as_dot as_gif as_png carp
+                classes_from_files classes_from_runtime
+                exclude_by_paths grep_by_paths
+                new node_color public_only
                 run3 set_dom set_dot size
                         )],
           properties => [],

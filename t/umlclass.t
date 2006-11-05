@@ -6,7 +6,7 @@ no warnings;
 use YAML::Syck;
 use File::Slurp;
 use IPC::Run3;
-use Test::More tests => 5 * 10 - 1;
+use Test::More tests => 69;
 
 my $script = 'script/umlclass.pl';
 my @cmd = ($^X, '-Ilib', $script);
@@ -25,10 +25,56 @@ my ($stdout, $stderr);
 }
 
 {
+    unlink 'a.png' if -f 'a.png';
+    ok run3( [@cmd, qw(--pattern UML::Class)], \undef, \$stdout, \$stderr ),
+        'umlclass --pattern UML::Class';
+    is $stdout, "UML::Class\nUML::Class::Simple\n\na.png generated.\n",
+        'stdout ok - a.png generated.';
+    warn $stderr if $stderr;
+    ok -f 'a.png', 'a.png exists';
+    ok( (-s 'a.png' > 1000), 'a.png is nonempty' );
+}
+
+{
+    unlink 'a.png' if -f 'a.png';
+    ok run3( [@cmd, qw(--pattern UML::Class --s 2.1x3)], \undef, \$stdout, \$stderr ),
+        'umlclass --pattern UML::Class --size 2x5.3';
+    is $stdout, "UML::Class\nUML::Class::Simple\n\na.png generated.\n",
+        'stdout ok - a.png generated.';
+    warn $stderr if $stderr;
+    ok -f 'a.png', 'a.png exists';
+    ok( (-s 'a.png' > 1000), 'a.png is nonempty' );
+}
+
+{
+    unlink 'a.png' if -f 'a.png';
+    ok run3( [@cmd, qw(--pattern UML::Class --size 2x5.3)], \undef, \$stdout, \$stderr ),
+        'umlclass --pattern UML::Class --size 2x5.3';
+    is $stdout, "UML::Class\nUML::Class::Simple\n\na.png generated.\n",
+        'stdout ok - a.png generated.';
+    warn $stderr if $stderr;
+    ok -f 'a.png', 'a.png exists';
+    ok( (-s 'a.png' > 1000), 'a.png is nonempty' );
+}
+
+{
     my $outfile = 'b.png';
     unlink $outfile if -f $outfile;
     ok run3( [@cmd, '-o', $outfile, qw(-c grey -p UML::Class)], \undef, \$stdout, \$stderr ),
         "umlclass -o $outfile -c grey -p UML::Class";
+    is $stdout, "UML::Class\nUML::Class::Simple\n\n$outfile generated.\n",
+        "stdout ok - $outfile generated.";
+    warn $stderr if $stderr;
+    ok -f $outfile, "$outfile exists";
+    ok( (-s $outfile > 1000), "$outfile is nonempty" );
+}
+
+{
+    my $outfile = 'b.png';
+    unlink $outfile if -f $outfile;
+    ok run3( [@cmd, '--out', $outfile, qw(--color grey --pattern UML::Class)],
+             \undef, \$stdout, \$stderr ),
+        "umlclass --out $outfile --color grey --pattern UML::Class";
     is $stdout, "UML::Class\nUML::Class::Simple\n\n$outfile generated.\n",
         "stdout ok - $outfile generated.";
     warn $stderr if $stderr;
@@ -94,6 +140,29 @@ _EOC_
     unlink $outfile if -f $outfile;
     ok run3( [@cmd, qw(-r -p ^FAST -o), $outfile, 't/FAST/lib'], \undef, \$stdout, \$stderr ),
         "umlclass -p ^FAST -o $outfile t/FAST/lib";
+    is $stdout, <<_EOC_, "stdout ok - $outfile generated.";
+FAST
+FAST::Element
+FAST::Node
+FAST::Struct
+FAST::Struct::If
+FAST::Struct::Seq
+FAST::Struct::While
+FAST::Util
+
+$outfile generated.
+_EOC_
+    warn $stderr if $stderr;
+    ok -f $outfile, "$outfile exists";
+    ok( (-s $outfile > 1000), "$outfile is nonempty" );
+}
+
+{
+    my $outfile = 'fast01.png';
+    unlink $outfile if -f $outfile;
+    ok run3( [@cmd, qw(--recursive --pattern ^FAST --out), $outfile, 't/FAST/lib'],
+              \undef, \$stdout, \$stderr ),
+        "umlclass --recursive --pattern ^FAST --out $outfile t/FAST/lib";
     is $stdout, <<_EOC_, "stdout ok - $outfile generated.";
 FAST
 FAST::Element

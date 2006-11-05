@@ -5,29 +5,39 @@ use warnings;
 
 use File::Slurp;
 use YAML::Syck;
-use Getopt::Std;
+use Getopt::Long;
 use File::Spec;
 use UML::Class::Simple;
 
 my $ext_regex = qr/(?:\.pl|\.pm)$/i;
 
-my %opts;
-getopts('c:hM:o:p:Prs:', \%opts) or help(1);
+my $outfile = 'a.png';
 
-help(0) if $opts{h};
+GetOptions(
+    "color|c=s"     => \my $node_color,
+    "help|h"        => \my $help,
+    "M=s"           => \my @preload_modules,
+    "out|o=s"       => \$outfile,
+    "public-only|P" => \my $public_only,
+    "pattern|p=s"   => \my $pattern,
+    "recursive|r"   => \my $recursive,
+    "size|s=s"      => \my $size,
+    "include|I=s"   => \my @include_paths,
+    "exclude|E=s"   => \my @exclude_paths,
+) or help(1);
+
+#warn "include_paths: @include_paths\n";
+#warn "exclude_paths: @exclude_paths\n";
+
+help(0) if $help;
 
 my ($width, $height);
-if ($opts{s}) {
-    if ($opts{s} !~ /(?x) ([\d\.]+) x ([\d\.]+) /) {
-        die "error: -s option only takes argument like 3.2x5 and 7x3\n";
+if ($size) {
+    if ($size !~ /(?x) ([\d\.]+) x ([\d\.]+) /) {
+        die "error: -s or --size option only takes argument like 3.2x5 and 7x3\n";
     }
     ($width, $height) = ($1, $2);
 }
-
-my $recursive   = $opts{r};
-my $public_only = $opts{P};
-my $node_color  = $opts{c};
-#my $root_class  = $opts{R};
 
 my @infiles = sort map { -d $_ ? all_in($_) : $_ } map glob, @ARGV;
 
@@ -62,9 +72,18 @@ if (!@plfiles) {
 
 if (!$painter) {
     my @classes;
-    @classes = classes_from_runtime($opts{M}, $opts{p}) if !@plfiles;
-    push @classes, classes_from_files(\@plfiles, $opts{p}) if @plfiles;
+    @classes = classes_from_runtime(\@preload_modules, $pattern) if !@plfiles;
+    push @classes, classes_from_files(\@plfiles, $pattern) if @plfiles;
     if (@classes) {
+        if (@include_paths) {
+            @classes = grep_by_paths(\@classes, @include_paths);
+        }
+        if (@exclude_paths) {
+            @classes = exclude_by_paths(\@classes, @exclude_paths);
+        }
+        if (!@classes) {
+            die "error: no class found.\n";
+        }
         print join("\n", sort @classes), "\n\n";
         $painter = UML::Class::Simple->new(\@classes);
     } else {
@@ -77,7 +96,6 @@ $painter->size($width, $height) if $width and $height;
 $painter->node_color($node_color) if $node_color;
 #$painter->root_at($root_class) if $root_class;
 
-my $outfile = $opts{o} || 'a.png';
 my $ext = 'png';
 if ($outfile =~ /\.(\w+)$/) { $ext = lc($1); }
 
@@ -110,18 +128,41 @@ Usage: $0 [-M module] [-o outfile] [-p regex] [infile... indir...]
     indir...     Directory containing perl source files. They're
                  optional too.
 Options:
+    --color color
     -c color     Set the node color. Defaults to "#f1e1f4".
+
+    --exclude path
+    -E path
+                 exclude modules that were installed to <path> in
+                 the drawing. multiple -E options are supported.
+
+    --help
     -h           Print this help.
+
     -M module    Preload the specified module to runtime.
+                 (multiple -M are supported.)
+
+    --include path
+    -I path
+                 Include *only* the classes that were installed to
+                 <path> in the drawing. multiple -I options are supported.
+
+    --out outfile
     -o outfile   Specify the output file name. it can be one of the
                  following types: .png, .dot, and .yml. Defaults
                  to a.png.
+
+    --public-only
     -P           Show public methods only.
+
+    --pattern regex
     -p regex     Specify the perl regex as the pattern used to
                  filter out classes to be drawn.
+
+    --recursive
     -r           Process subdirectories of indir recursively.
-    -R class     Specify the root class from which only its
-                 descendents are shown.
+
+    --size <w>x<h>
     -s <w>x<h>   Specify the width and height (in inches) for the
                  output images. For instance, 3.2x6.3 and 4x8.
 
@@ -249,7 +290,7 @@ or just plot the packages in the specified .pm files:
 
     $ umlclass.pl -o a.png lib/foo.pm lib/bar/baz.pm
 
-or even specify a pattern (in perl regex) to filter out the packages you want to plot:
+or even specify a pattern (in perl regex) to filter out the packages you want to draw:
 
     $ umlclass.pl -o a.png -p "^Foo::" lib/foo.pm
 
@@ -309,12 +350,16 @@ or tell F<umlclass.pl> to iterate through the directories for you:
 
 =over
 
+=item --color color
+
 =item -c color
 
 Sets the node color. Defaults to C<#f1e1f4>.
 
 You can either specify RGB values like C<#rrggbb> in hex form, or
 color names like "C<grey>" and "C<red>".
+
+=item --help
 
 =item -h
 
@@ -325,6 +370,12 @@ Shows the help message.
 Preloads the module which contains the classes you want to depict. For example,
 
     $ umlclass.pl -M PPI -o ppi.png -p "^PPI::"
+
+Multiple C<-M> options are accepted. For instance:
+
+    $ umlclass.pl -M Foo -M Bar::Baz -p "Class::"
+
+=item --out outfile
 
 =item -o outfile
 
@@ -351,23 +402,33 @@ levels. I really like this freedom, since tools can't always do exactly what I w
 
 If no C<-o> option was specified, F<a.png> will be assumed.
 
+=item --pattern regex
+
 =item -p regex
 
 Specifies the pattern (perl regex) used to filter out the class names to be drawn.
+
+=item --public-only
 
 =item -P
 
 Shows public methods only.
 
+=item --recursive
+
 =item -r
 
 Processes subdirectories of input directories recursively.
+
+=item --size
 
 =item -s <w>x<h>
 
 Specifies the width and height of the resulting image. For example:
 
     -s 3.6x7
+
+    --size 5x6
 
 where the unit is inches instead of pixels.
 

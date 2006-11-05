@@ -1,3 +1,16 @@
+= version 0.06 (Nov 5, 2006)
+* added long option versions for existing single-char options.
+  (for example, added `--size` for `-s`, and `--pattern` for `-p`.)
+* multiple `-M` options are now supported.
+* sub `classes_from_runtime` now supports array refs as its first argument:
+    @classes = classes_from_runtime([qw(Foo::Bar Baz)], qr/blah/);
+* sub `classes_from_files` now supports scalars as its first argument:
+    @classes = classes_from_files('Foo.pm');
+* fixed a bug in sub `classes_from_files`
+  (regex patterns were not honoured at all in previous versions. sigh.)
+* implemented subs `exclude_by_paths` and `grep_by_paths` in Simple.pm.
+* added -E and -I options to umlclass.pl.
+
 = version 0.05 (Nov 5, 2006)
 * fixed the wrong sub prototype so as to make the second argument truly optional
   (reported by Yanick Champoux as [rt.cpan.org #22811])
@@ -6,9 +19,9 @@
 = version 0.04 (Nov 1, 2006)
 * fixed the PPI->strerr bug reported by christopher.
   it should have been PPI::Document->strerr in the source.
-* added a simple SYNOPSIS to script/umlclass.pl's POD
-* added more guide to script/umlclass.pl's POD
-  (thanks christopher's questions)
+* added a simple SYNOPSIS to script/umlclass.pl's POD.
+* added more guide to script/umlclass.pl's POD.
+  (thanks christopher's questions.)
 
 = version 0.03 (Oct 31, 2006)
 * fixed the node_color bug.
