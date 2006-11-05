@@ -19,7 +19,7 @@ our @EXPORT = qw(
     exclude_by_paths grep_by_paths
 );
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 my $tt = Template->new;
 my $dot_template;
@@ -40,6 +40,8 @@ sub _normalize_path ($) {
     $path = File::Spec->rel2abs($path);
     if (File::Spec->case_tolerant()) {
         $path = lc($path);
+    } else {
+        $path;
     }
 }
 
@@ -49,12 +51,16 @@ sub exclude_by_paths ($@) {
     my @res;
     #_extend_INC();
     for my $class (@$rclasses) {
+        #warn $class;
         my $filename = Class::Inspector->resolved_filename($class);
+        #warn "[0] ", $filename, "\n";
         if (!$filename && $INC{$class}) {
             $filename = Class::Inspector->loaded_filename($class);
         }
         if (!$filename) { next; }
+        #warn "[1] ", $filename, "\n";
         $filename = _normalize_path($filename);
+        #warn "[2] ", $filename, "\n";
         #my $value = $INC{$key};
         if (any { substr($filename, 0, length) eq $_ } @paths) {
             #warn "!!! ignoring $filename\n";
@@ -425,7 +431,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.05 released by Nov 5, 2006.
+This document describes C<UML::Class::Simple> 0.06 released by Nov 5, 2006.
 
 =head1 SYNOPSIS
 

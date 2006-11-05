@@ -3,7 +3,7 @@ NAME
     code
 
 VERSION
-    This document describes "UML::Class::Simple" 0.05 released by Nov 5,
+    This document describes "UML::Class::Simple" 0.06 released by Nov 5,
     2006.
 
 SYNOPSIS
@@ -73,7 +73,8 @@ SAMPLE OUTPUTS
         (See also samples/fast.png in the distribution.)
 
 SUBROUTINES
-    classes_from_runtime($module_to_load, $regex)
+    classes_from_runtime($module_to_load, $regex?)
+    classes_from_runtime(\@modules_to_load, $regex?)
         Returns a list of class (or package) names by inspecting the perl
         runtime environment. $module_to_load is the *main* module name to
         load while $regex is a perl regex used to filter out interesting
@@ -81,14 +82,29 @@ SUBROUTINES
 
         The second argument can be omitted.
 
-    classes_from_files(\@pmfiles, $regex)
+    classes_from_files($pmfile, $regex?)
+    classes_from_files(\@pmfiles, $regex?)
         Returns a list of class (or package) names by scanning through the
         perl source files given in the first argument. $regex is used to
         filter out interesting package names.
 
         The second argument can be omitted.
 
-    These subroutines are imported by default.
+    exclude_by_paths
+        Exclude package names via specifying one or more paths where the
+        corresponding modules were installed into. For example:
+
+            @classes = exclude_by_paths(\@classes, 'C:/perl/lib');
+
+            @classes = exclude_by_paths(\@classes, '/home/foo', '/System/Library');
+
+    grep_by_paths
+        Filter out package names via specifying one or more paths where the
+        corresponding modules were installed into. For instance:
+
+            @classes = grep_by_paths(\@classes, '/home/malon', './blib/lib');
+
+    All these four subroutines are exported by default.
 
 METHODS
     "$obj->new( [@class_names] )"

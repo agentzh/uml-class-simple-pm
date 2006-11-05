@@ -83,7 +83,7 @@ my ($stdout, $stderr);
 {
     my $outfile = 'include03.png';
     unlink $outfile if -f $outfile;
-    ok run3( [@cmd, '-o', $outfile, '--include', $Config{installsitearch}],
+    ok run3( [@cmd, '-o', $outfile, '--include', $Config{archlibexp}],
               \undef, \$stdout, \$stderr ),
         "umlclass -o $outfile -I $Config{archlibexp}";
     like $stdout, qr/\w+::/,
