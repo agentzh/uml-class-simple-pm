@@ -3,15 +3,95 @@
 use strict;
 no warnings;
 
+use Config;
 use YAML::Syck;
 use File::Slurp;
 use IPC::Run3;
-use Test::More tests => 69;
+use Test::More tests => 93;
 
 my $script = 'script/umlclass.pl';
 my @cmd = ($^X, '-Ilib', $script);
 
 my ($stdout, $stderr);
+
+{
+    my $outfile = 'exclude01.png';
+    unlink $outfile if -f $outfile;
+    ok run3( [@cmd, '-o', $outfile, '-E', $Config{archlibexp}],
+              \undef, \$stdout, \$stderr ),
+        "umlclass -o $outfile -E $Config{archlibexp}";
+    like $stdout, qr/\w+::/,
+        "stdout ok - $outfile generated.";
+    warn $stderr if $stderr;
+    ok -f $outfile, "$outfile exists";
+    ok( (-s $outfile > 1000), "$outfile is nonempty" );
+}
+
+{
+    my $outfile = 'exclude02.png';
+    unlink $outfile if -f $outfile;
+    ok run3( [@cmd, '-o', $outfile, '-E', $Config{archlibexp},
+              '--exclude', $Config{installsitearch}],
+              \undef, \$stdout, \$stderr ),
+        "umlclass -o $outfile -E $Config{archlibexp} --exclude $Config{installsitearch}";
+    like $stdout, qr/\w+::/,
+        "stdout ok - $outfile generated.";
+    warn $stderr if $stderr;
+    ok -f $outfile, "$outfile exists";
+    ok( (-s $outfile > 1000), "$outfile is nonempty" );
+}
+
+{
+    my $outfile = 'exclude01.png';
+    unlink $outfile if -f $outfile;
+    ok run3( [@cmd, '-o', $outfile, '-E', $Config{archlibexp}],
+              \undef, \$stdout, \$stderr ),
+        "umlclass -o $outfile -E $Config{archlibexp}";
+    like $stdout, qr/\w+::/,
+        "stdout ok - $outfile generated.";
+    warn $stderr if $stderr;
+    ok -f $outfile, "$outfile exists";
+    ok( (-s $outfile > 1000), "$outfile is nonempty" );
+}
+
+{
+    my $outfile = 'include01.png';
+    unlink $outfile if -f $outfile;
+    ok run3( [@cmd, '-o', $outfile, '-I', $Config{archlibexp}],
+              \undef, \$stdout, \$stderr ),
+        "umlclass -o $outfile -I $Config{archlibexp}";
+    like $stdout, qr/\w+::/,
+        "stdout ok - $outfile generated.";
+    warn $stderr if $stderr;
+    ok -f $outfile, "$outfile exists";
+    ok( (-s $outfile > 1000), "$outfile is nonempty" );
+}
+
+{
+    my $outfile = 'include02.png';
+    unlink $outfile if -f $outfile;
+    ok run3( [@cmd, '-o', $outfile, '-I', $Config{archlibexp},
+              '--exclude', $Config{archlibexp}],
+              \undef, \$stdout, \$stderr ),
+        "umlclass -o $outfile -I $Config{archlibexp} --exclude $Config{archlibexp}";
+    is $stdout, '',
+        "stdout ok - $outfile generated.";
+    is $stderr, "error: no class found.\n";
+    ok !-f $outfile, "$outfile exists";
+}
+
+{
+    my $outfile = 'include03.png';
+    unlink $outfile if -f $outfile;
+    ok run3( [@cmd, '-o', $outfile, '--include', $Config{installsitearch}],
+              \undef, \$stdout, \$stderr ),
+        "umlclass -o $outfile -I $Config{archlibexp}";
+    like $stdout, qr/\w+::/,
+        "stdout ok - $outfile generated.";
+    warn $stderr if $stderr;
+    ok -f $outfile, "$outfile exists";
+    ok( (-s $outfile > 1000), "$outfile is nonempty" );
+}
 
 {
     unlink 'a.png' if -f 'a.png';
@@ -36,25 +116,29 @@ my ($stdout, $stderr);
 }
 
 {
-    unlink 'a.png' if -f 'a.png';
-    ok run3( [@cmd, qw(--pattern UML::Class --s 2.1x3)], \undef, \$stdout, \$stderr ),
-        'umlclass --pattern UML::Class --size 2x5.3';
-    is $stdout, "UML::Class\nUML::Class::Simple\n\na.png generated.\n",
-        'stdout ok - a.png generated.';
+    my $outfile = 'size01.png';
+    unlink $outfile if -f $outfile;
+    ok run3( [@cmd, '-o', $outfile, qw(--pattern UML::Class --s 2.1x3)],
+              \undef, \$stdout, \$stderr ),
+        "umlclass -o $outfile --pattern UML::Class --size 2x5.3";
+    is $stdout, "UML::Class\nUML::Class::Simple\n\n$outfile generated.\n",
+        "stdout ok - $outfile generated";
     warn $stderr if $stderr;
-    ok -f 'a.png', 'a.png exists';
-    ok( (-s 'a.png' > 1000), 'a.png is nonempty' );
+    ok -f $outfile, "$outfile exists";
+    ok( (-s $outfile > 1000), "$outfile is nonempty" );
 }
 
 {
-    unlink 'a.png' if -f 'a.png';
-    ok run3( [@cmd, qw(--pattern UML::Class --size 2x5.3)], \undef, \$stdout, \$stderr ),
-        'umlclass --pattern UML::Class --size 2x5.3';
-    is $stdout, "UML::Class\nUML::Class::Simple\n\na.png generated.\n",
-        'stdout ok - a.png generated.';
+    my $outfile = 'size02.png';
+    unlink $outfile if -f $outfile;
+    ok run3( [@cmd, '-o', $outfile, qw(--pattern UML::Class --s 5x3.2)],
+              \undef, \$stdout, \$stderr ),
+        "umlclass -o $outfile --pattern UML::Class --size 2x5.3";
+    is $stdout, "UML::Class\nUML::Class::Simple\n\n$outfile generated.\n",
+        "stdout ok - $outfile generated";
     warn $stderr if $stderr;
-    ok -f 'a.png', 'a.png exists';
-    ok( (-s 'a.png' > 1000), 'a.png is nonempty' );
+    ok -f $outfile, "$outfile exists";
+    ok( (-s $outfile > 1000), "$outfile is nonempty" );
 }
 
 {
