@@ -1,13 +1,16 @@
 use strict;
 use warnings;
 
-use Test::More tests => 29;
+use Test::More tests => 30;
 use UML::Class::Simple;
 #use Data::Dumper::Simple;
 
 use UML::Class::Simple;
 
 my (@classes, $painter);
+
+@classes = classes_from_runtime( 'PPI' );
+ok @classes, 'calling classes_from_runtime with one argument';
 
 @classes = classes_from_runtime("PPI", qr/^PPI::/);
 ok @classes > 5, 'a lot of PPI classes found';

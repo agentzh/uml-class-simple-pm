@@ -379,8 +379,13 @@ where the unit is inches instead of pixels.
 
 =item *
 
-Add the C<-R class> option which specifies the root class from which 
-only its descendents will be shown.
+Add the C<-I path> and C<-E path> option to include or exclude packages
+via installation paths. (suggested by Christopher Malon)
+
+=item *
+
+If the user passes plain module names like "Foo::Bar", then its
+ancestors and subclasses will be drawn. (also suggested by Christopher Malon)
 
 =back
 

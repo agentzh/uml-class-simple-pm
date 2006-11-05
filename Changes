@@ -1,3 +1,8 @@
+= version 0.05 (Nov 5, 2006)
+* fixed the wrong sub prototype so as to make the second argument truly optional
+  (reported by Yanick Champoux as [rt.cpan.org #22811])
+* added more TODOs from Christopher.
+
 = version 0.04 (Nov 1, 2006)
 * fixed the PPI->strerr bug reported by christopher.
   it should have been PPI::Document->strerr in the source.

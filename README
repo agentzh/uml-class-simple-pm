@@ -3,7 +3,7 @@ NAME
     code
 
 VERSION
-    This document describes "UML::Class::Simple" 0.04 released by Nov 1,
+    This document describes "UML::Class::Simple" 0.05 released by Nov 5,
     2006.
 
 SYNOPSIS
@@ -216,10 +216,6 @@ LIMITATIONS
         most people (including me). ;-)
 
 TODO
-    *   Suppress the "Subroutine XXX redefined at ..." warnings while
-        loading user's .pm files. Not sure how to do that. If you have a
-        solution, please contact the author ASAP.
-
     *   Add more unit tests.
 
     *   Add support for more image formats, such as as_ps, as_jpg, and etc.

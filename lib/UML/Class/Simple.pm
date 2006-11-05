@@ -16,12 +16,12 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(classes_from_runtime classes_from_files);
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 my $tt = Template->new;
 my $dot_template;
 
-sub classes_from_runtime ($$) {
+sub classes_from_runtime {
     my ($module, $pattern) = @_;
     $pattern = '' if !defined $pattern;
     if ($module) {
@@ -47,7 +47,7 @@ sub _runtime_packages {
     keys %$cache;
 }
 
-sub classes_from_files ($@) {
+sub classes_from_files {
     require PPI;
     my ($list, $pattern) = @_;
     my @classes;
@@ -81,7 +81,7 @@ sub _gen_paths {
     }
 }
 
-sub new ($$) {
+sub new {
     my $class = ref $_[0] ? ref shift : shift;
     my $rclasses = shift || [];
     my $self = bless {
@@ -92,7 +92,7 @@ sub new ($$) {
     $self;
 }
 
-sub size ($$$) {
+sub size {
     my $self = shift;
     if (@_) {
         my ($width, $height) = @_;
@@ -118,7 +118,7 @@ sub node_color {
     }
 }
 
-sub public_only ($$) {
+sub public_only {
     my $self = shift;
     if (@_) {
         $self->{public_only} = shift;
@@ -128,12 +128,12 @@ sub public_only ($$) {
     }
 }
 
-sub as_png ($@) {
+sub as_png {
     my $self = shift;
     $self->_as_image('png', @_);
 }
 
-sub as_gif ($@) {
+sub as_gif {
     my $self = shift;
     $self->_as_image('gif', @_);
 }
@@ -162,7 +162,7 @@ sub _as_image {
     }
 }
 
-sub as_dom ($) {
+sub as_dom {
     my $self = shift;
     $self->_build_dom;
     { classes => $self->{classes} };
@@ -226,7 +226,7 @@ sub _build_dom {
     #warn "@classes";
 }
 
-sub _load_file {
+sub _load_file ($) {
     my $file = shift;
     my $path = File::Spec->rel2abs($file);
     #warn "!!! >>>> $path\n";
@@ -247,7 +247,7 @@ sub _load_file {
     !$@;
 }
 
-sub as_dot ($@) {
+sub as_dot {
     my ($self, $fname) = @_;
     $self->_build_dom;
     if ($fname) {
@@ -364,7 +364,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.04 released by Nov 1, 2006.
+This document describes C<UML::Class::Simple> 0.05 released by Nov 5, 2006.
 
 =head1 SYNOPSIS
 
@@ -646,12 +646,6 @@ use different programming languages. But I think it's not the case for most peop
 =head1 TODO
 
 =over
-
-=item *
-
-Suppress the "Subroutine XXX redefined at ..." warnings while loading user's
-.pm files. Not sure how to do that. If you have a solution, please contact the
-author ASAP.
 
 =item *
 
