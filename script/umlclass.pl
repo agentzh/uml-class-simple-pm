@@ -133,7 +133,7 @@ Options:
 
     --exclude path
     -E path
-                 exclude modules that were installed to <path> in
+                 exclude modules that were installed to <path> from
                  the drawing. multiple -E options are supported.
 
     --help
@@ -359,11 +359,25 @@ Sets the node color. Defaults to C<#f1e1f4>.
 You can either specify RGB values like C<#rrggbb> in hex form, or
 color names like "C<grey>" and "C<red>".
 
+=item --exclude path
+
+=item -E path
+
+excludes modules that were installed to C<path> from
+the drawing. multiple C<-E> options are supported.
+
 =item --help
 
 =item -h
 
 Shows the help message.
+
+=item --include path
+
+=item -I path
+
+Draws I<only> the classes that were installed to
+C<path> in the drawing. multiple C<-I> options are supported.
 
 =item -M module
 
@@ -437,11 +451,6 @@ where the unit is inches instead of pixels.
 =head1 TODO
 
 =over
-
-=item *
-
-Add the C<-I path> and C<-E path> option to include or exclude packages
-via installation paths. (suggested by Christopher Malon)
 
 =item *
 
