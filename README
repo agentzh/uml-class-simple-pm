@@ -3,7 +3,7 @@ NAME
     code
 
 VERSION
-    This document describes "UML::Class::Simple" 0.06 released by Nov 5,
+    This document describes "UML::Class::Simple" 0.07 released by Nov 5,
     2006.
 
 SYNOPSIS
@@ -91,7 +91,7 @@ SUBROUTINES
         The second argument can be omitted.
 
     exclude_by_paths
-        Exclude package names via specifying one or more paths where the
+        Excludes package names via specifying one or more paths where the
         corresponding modules were installed into. For example:
 
             @classes = exclude_by_paths(\@classes, 'C:/perl/lib');
@@ -99,12 +99,12 @@ SUBROUTINES
             @classes = exclude_by_paths(\@classes, '/home/foo', '/System/Library');
 
     grep_by_paths
-        Filter out package names via specifying one or more paths where the
+        Filters out package names via specifying one or more paths where the
         corresponding modules were installed into. For instance:
 
             @classes = grep_by_paths(\@classes, '/home/malon', './blib/lib');
 
-    All these four subroutines are exported by default.
+    All these subroutines are exported by default.
 
 METHODS
     "$obj->new( [@class_names] )"
@@ -256,6 +256,16 @@ ACKNOWLEDGEMENT
 
     I'm also grateful to Christopher Malon since he (unintentionally)
     motivated me to turn the original hack into this CPAN module. ;-)
+
+SOURCE CONTROL
+    You can always grab the latest version from the following SVN repos:
+
+    <http://svn.berlios.de/svnroot/repos/umlclass/>
+
+    It has anonymous access to all.
+
+    If you have the tuits to help out with this module, please let me know.
+    I have a dream to keep sending out commit bits like Audrey Tang. ;-)
 
 AUTHOR
     Agent Zhang <agentzh@gmail.com>

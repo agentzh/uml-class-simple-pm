@@ -1,3 +1,6 @@
+= version 0.07 (Nov 5, 2006)
+* updated the POD to refect recent changes.
+
 = version 0.06 (Nov 5, 2006)
 * added long option versions for existing single-char options.
   (for example, added `--size` for `-s`, and `--pattern` for `-p`.)

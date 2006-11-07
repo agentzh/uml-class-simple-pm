@@ -19,7 +19,7 @@ our @EXPORT = qw(
     exclude_by_paths grep_by_paths
 );
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 my $tt = Template->new;
 my $dot_template;
@@ -431,7 +431,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.06 released by Nov 5, 2006.
+This document describes C<UML::Class::Simple> 0.07 released by Nov 5, 2006.
 
 =head1 SYNOPSIS
 
@@ -553,7 +553,7 @@ The second argument can be omitted.
 
 =item exclude_by_paths
 
-Exclude package names via specifying one or more paths where the corresponding
+Excludes package names via specifying one or more paths where the corresponding
 modules were installed into. For example:
 
     @classes = exclude_by_paths(\@classes, 'C:/perl/lib');
@@ -562,14 +562,14 @@ modules were installed into. For example:
 
 =item grep_by_paths
 
-Filter out package names via specifying one or more paths where the corresponding
+Filters out package names via specifying one or more paths where the corresponding
 modules were installed into. For instance:
 
     @classes = grep_by_paths(\@classes, '/home/malon', './blib/lib');
 
 =back
 
-All these four subroutines are exported by default.
+All these subroutines are exported by default.
 
 =head1 METHODS
 
@@ -769,6 +769,17 @@ specific package.
 
 I'm also grateful to Christopher Malon since he (unintentionally) motivated me to
 turn the original hack into this CPAN module. ;-)
+
+=head1 SOURCE CONTROL
+
+You can always grab the latest version from the following SVN repos:
+
+L<http://svn.berlios.de/svnroot/repos/umlclass/>
+
+It has anonymous access to all.
+
+If you have the tuits to help out with this module, please let me know.
+I have a dream to keep sending out commit bits like Audrey Tang. ;-)
 
 =head1 AUTHOR
 

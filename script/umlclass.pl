@@ -454,8 +454,8 @@ where the unit is inches instead of pixels.
 
 =item *
 
-If the user passes plain module names like "Foo::Bar", then its
-ancestors and subclasses will be drawn. (also suggested by Christopher Malon)
+If the user passes plain module names like "Foo::Bar", then its (and only its)
+ancestors and subclasses will be drawn. (This is suggested by Christopher Malon.)
 
 =back
 
