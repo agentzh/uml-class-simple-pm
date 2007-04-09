@@ -300,7 +300,7 @@ Quite handy, isn't it? ;-)
 
 Never feed plain module names to F<umlclass.pl>, for intance,
 
-  $ umlclass.pl Scalar::Defer
+  $ umlclass.pl Scalar::Defer  # DO NOT DO THIS!
 
 will lead you to the following error message:
 

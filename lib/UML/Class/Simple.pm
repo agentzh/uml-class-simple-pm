@@ -18,7 +18,7 @@ our @EXPORT = qw(
     exclude_by_paths grep_by_paths
 );
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 my $tt = Template->new;
 my $dot_template;
@@ -352,11 +352,11 @@ digraph uml_class_diagram {
     <td>
     <table border="0" cellborder="0" cellspacing="0" cellpadding="1">
       <tr>
-    <td><font color="red">
+    <td>[% IF class.properties.size > 0 %]<font color="red">
     [%- FOREACH property = class.properties %]
       [%- property.match("^_") ? "-" : "+" %]<br align="left"/>
 
-    [%- END %]</font></td>
+    [%- END %]</font>[% END %]</td>
     <td port="properties" bgcolor="white" align="left">
     [%- FOREACH property = class.properties %]
       [%- property %]<br align="left"/>
@@ -370,11 +370,11 @@ digraph uml_class_diagram {
     <td port="methods" >
     <table border="0" cellborder="0" cellspacing="0" cellpadding="0">
       <tr>
-    <td><font color="red">
+    <td>[% IF class.methods.size > 0 %]<font color="red">
     [%- FOREACH method = class.methods %]
       [%- method.match("^_") ? "-" : "+" %]<br align="left"/>
 
-    [%- END %]</font></td>
+    [%- END %]</font>[% END %]</td>
     <td bgcolor="white" align="left">
     [%- FOREACH method = class.methods %]
       [%- method %]<br align="left"/>
@@ -430,7 +430,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.08 released by April 10, 2007.
+This document describes C<UML::Class::Simple> 0.09 released by April 10, 2007.
 
 =head1 SYNOPSIS
 
