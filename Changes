@@ -1,3 +1,7 @@
+= version 0.08 (Apr 10, 2007)
+* fixed the failing tests on ubuntu linux.
+* fixed some typos in the POD.
+
 = version 0.07 (Nov 5, 2006)
 * updated the POD to refect recent changes.
 

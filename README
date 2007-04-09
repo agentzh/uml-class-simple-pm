@@ -3,8 +3,8 @@ NAME
     code
 
 VERSION
-    This document describes "UML::Class::Simple" 0.07 released by Nov 5,
-    2006.
+    This document describes "UML::Class::Simple" 0.08 released by April 10,
+    2007.
 
 SYNOPSIS
         use UML::Class::Simple;
@@ -20,13 +20,13 @@ SYNOPSIS
 
         @classes = classes_from_files(['lib/Foo.pm', 'lib/Foo/Bar.pm']);
         $painter = UML::Class::Simple->new(\@classes);
-    
+
         # we can explicitly specify the image size
         $painter->size(5, 3.6); # in inches
 
         # ...and change the default title background color:
         $painter->node_color('#ffffff'); # defaults to '#f1e1f4'
-    
+
         # only show public methods and properties
         $painter->public_only(1);
 
@@ -227,9 +227,9 @@ LIMITATIONS
     *   To prevent potential naming confusion. I'm using Perl's "::"
         namespace separator in the class diagrams instead of dot (".")
         chosen by the UML standard. One can argue that following UML
-        standards are more important since people in the same team may use
-        different programming languages. But I think it's not the case for
-        most people (including me). ;-)
+        standards is more important since people in the same team may use
+        different programming languages, but I think it's not the case for
+        the majority (including myself) ;-)
 
 TODO
     *   Add more unit tests.
@@ -242,10 +242,11 @@ TODO
     *   Provide backends other than Graphviz.
 
     Please send me your wish list by emails or preferably via the CPAN RT
-    site. I'll add them here if I'm also interested in your crazy ideas. ;-)
+    site. I'll add them here or even implement them promptly if I'm also
+    interested in your (crazy) ideas. ;-)
 
 BUGS
-    There must be some serious bugs lurking somewhere. so if you found one,
+    There must be some serious bugs lurking somewhere; if you found one,
     please report it to <http://rt.cpan.org> or contact the author directly.
 
 ACKNOWLEDGEMENT
@@ -254,11 +255,12 @@ ACKNOWLEDGEMENT
     names from user's .pm files or the latter to retrieve the function list
     of a specific package.
 
-    I'm also grateful to Christopher Malon since he (unintentionally)
+    I'm also grateful to Christopher Malon since he has (unintentionally)
     motivated me to turn the original hack into this CPAN module. ;-)
 
 SOURCE CONTROL
-    You can always grab the latest version from the following SVN repos:
+    You can always grab the latest version from the following Subversion
+    repository:
 
     <http://svn.berlios.de/svnroot/repos/umlclass/>
 

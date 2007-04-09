@@ -2,6 +2,7 @@ use strict;
 use inc::Module::Install;
 
 name            ('UML-Class-Simple');
+perl_version    ('5.004');
 license         ('perl');
 all_from        ('lib/UML/Class/Simple.pm');
 
@@ -11,13 +12,13 @@ requires        ('File::Slurp');
 requires        ('YAML::Syck');
 requires        ('Carp');
 requires        ('File::Spec');
-requires        ('PPI'              => '1.118');
+requires        ('PPI');
 requires        ('Class::Inspector' => '1.16');
-requires        ('IPC::Run3'        => '0.036');
-requires        ('List::MoreUtils'  => '0.21');
-requires        ('Template'         => '2.14');
+requires        ('IPC::Run3');
+requires        ('List::MoreUtils');
+requires        ('Template');
 
-build_requires  ('Test::More'       => '0.64');
+build_requires  ('Test::More');
 
 auto_install();
 WriteAll();
@@ -40,3 +41,4 @@ END {
         warn "Warning: the version of Graphviz dot is unknown: $s\n";
     }
 }
+

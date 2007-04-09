@@ -3,6 +3,10 @@ t/basic.t
 t/pod.t
 t/pod-coverage.t
 t/umlclass.t
+t/classes-from-runtime.t
+t/data/classes-from-runtime.pl
+t/data/filespec.pl
+t/data/UMLClassTest.pm
 t/FAST/lib/FAST.pm
 t/FAST/lib/FAST/Struct.pm
 t/FAST/lib/FAST/Node.pm
@@ -19,6 +23,8 @@ README
 Changes
 MANIFEST
 META.yml
+clean
+clean.bat
 inc/Module/Install.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/Base.pm

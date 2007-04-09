@@ -266,7 +266,7 @@ L<Moose> already installed. (It's also on CPAN, btw.)
 
 Or the full-size version:
 
-  $ umlclass -M PPI -o samples/ppi_big.png -p "^PPI::"
+  $ umlclass.pl -M PPI -o samples/ppi_big.png -p "^PPI::"
 
 (See L<http://perlcabal.org/agent/images/ppi_big.png>.)
 

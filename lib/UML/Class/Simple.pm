@@ -1,6 +1,5 @@
 package UML::Class::Simple;
 
-use 5.006001;
 use strict;
 use warnings;
 no warnings 'redefine';
@@ -19,7 +18,7 @@ our @EXPORT = qw(
     exclude_by_paths grep_by_paths
 );
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 my $tt = Template->new;
 my $dot_template;
@@ -297,7 +296,7 @@ sub _load_file ($) {
     my $file = shift;
     my $path = _normalize_path($file);
     #warn "!!! >>>> $path\n";
-    if ( any { 
+    if ( any {
                 #warn "<<<<< ", _normalize_path($_), "\n";
                 $path eq _normalize_path($_);
              } values %INC ) {
@@ -431,7 +430,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.07 released by Nov 5, 2006.
+This document describes C<UML::Class::Simple> 0.08 released by April 10, 2007.
 
 =head1 SYNOPSIS
 
@@ -448,13 +447,13 @@ This document describes C<UML::Class::Simple> 0.07 released by Nov 5, 2006.
 
     @classes = classes_from_files(['lib/Foo.pm', 'lib/Foo/Bar.pm']);
     $painter = UML::Class::Simple->new(\@classes);
-    
+
     # we can explicitly specify the image size
     $painter->size(5, 3.6); # in inches
 
     # ...and change the default title background color:
     $painter->node_color('#ffffff'); # defaults to '#f1e1f4'
-    
+
     # only show public methods and properties
     $painter->public_only(1);
 
@@ -477,14 +476,14 @@ figures themselves or provide any specs other than the source code of
 their own libraries that they want to depict. This module does all the
 jobs for them! :)
 
-You know, I was really impressed by the outputs of L<UML::Sequence>, so I 
+You know, I was really impressed by the outputs of L<UML::Sequence>, so I
 decided to find something to (automatically) get pretty class diagrams
 too. The images from L<Autodia>'s Graphviz backend didn't quite fit my needs
 when I was making some slides for my presentations.
 
-I think most of the time you just want to use the command-line utility L<umlclass.pl>
-offered by this module (just like me). See the documentation of L<umlclass.pl> for
-details.
+I think most of the time you just want to use the command-line utility
+L<umlclass.pl> offered by this module (just like me). See the
+documentation of L<umlclass.pl> for details.
 
 =head1 SAMPLE OUTPUTS
 
@@ -707,7 +706,8 @@ please drop me a line.
 
 =item *
 
-Only the inheritance relationships are shown in the images. I believe other subtle 
+Only the inheritance relationships are shown in the images. I believe
+other subtle
 relations may mess up the Graphviz layouter. Hence the "::Simple" suffix in
 this module name.
 
@@ -717,16 +717,18 @@ Unlike L<Autodia>, at this moment only Graphviz backend is provided.
 
 =item *
 
-There's no way to recognize I<real> perl classes automatically. After all, Perl 5's 
+There's no way to recognize I<real> perl classes automatically. After all, Perl 5's
 classes are implemented by packages. I think Perl 6 will make my life much easier.
 
 =item *
 
-To prevent potential naming confusion. I'm using Perl's C<::> namespace separator
-in the class diagrams instead of dot (C<.>) chosen by the UML standard. One can argue
-that following UML standards are more important since people in the same team may
-use different programming languages. But I think it's not the case for most people
-(including me). ;-)
+To prevent potential naming confusion. I'm using Perl's C<::> namespace
+separator
+in the class diagrams instead of dot (C<.>) chosen by the UML standard.
+One can argue that following UML standards is more important since people
+in the same team may
+use different programming languages, but I think it's not the case for
+the majority (including myself) ;-)
 
 =back
 
@@ -752,27 +754,31 @@ Provide backends other than Graphviz.
 
 =back
 
-Please send me your wish list by emails or preferably via the CPAN RT site. I'll add
-them here if I'm also interested in your crazy ideas. ;-)
+Please send me your wish list by emails or preferably via the CPAN RT site.
+I'll add them here or even implement them promptly if I'm also interested
+in your (crazy) ideas. ;-)
 
 =head1 BUGS
 
-There must be some serious bugs lurking somewhere. so if you found one, please report
+There must be some serious bugs lurking somewhere;
+if you found one, please report
 it to L<http://rt.cpan.org> or contact the author directly.
 
 =head1 ACKNOWLEDGEMENT
 
 I must thank Adam Kennedy (Alias) for writing the excellent L<PPI> and
-L<Class::Inspector> modules. L<umlclass.pl> uses the former to extract package names 
-from user's .pm files or the latter to retrieve the function list of a 
+L<Class::Inspector> modules. L<umlclass.pl> uses the former to extract
+package names
+from user's F<.pm> files or the latter to retrieve the function list of a
 specific package.
 
-I'm also grateful to Christopher Malon since he (unintentionally) motivated me to
-turn the original hack into this CPAN module. ;-)
+I'm also grateful to Christopher Malon since he has (unintentionally)
+motivated me to turn the original hack into this CPAN module. ;-)
 
 =head1 SOURCE CONTROL
 
-You can always grab the latest version from the following SVN repos:
+You can always grab the latest version from the following Subversion
+repository:
 
 L<http://svn.berlios.de/svnroot/repos/umlclass/>
 
@@ -795,3 +801,4 @@ the same terms as perl itself.
 =head1 SEE ALSO
 
 L<umlclass.pl>, L<Autodia>, L<UML::Sequence>, L<PPI>, L<Class::Inspector>.
+
