@@ -18,7 +18,7 @@ GetOptions(
     "help|h"        => \my $help,
     "M=s"           => \my @preload_modules,
     "out|o=s"       => \$outfile,
-    "public-only|P" => \my $public_only,
+    "public-only" => \my $public_only,
     "pattern|p=s"   => \my $pattern,
     "recursive|r"   => \my $recursive,
     "size|s=s"      => \my $size,
@@ -153,7 +153,7 @@ Options:
                  to a.png.
 
     --public-only
-    -P           Show public methods only.
+                 Show public methods only.
 
     --pattern regex
     -p regex     Specify the perl regex as the pattern used to
