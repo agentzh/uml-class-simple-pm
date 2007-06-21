@@ -10,6 +10,7 @@ use Template;
 use Carp qw(carp);
 use File::Spec;
 use List::MoreUtils 'any';
+use XML::LibXML;
 
 require Exporter;
 our @ISA = qw(Exporter);
@@ -154,6 +155,12 @@ sub new {
         class_names => $rclasses,
         node_color  => '#f1e1f4',
     }, $class;
+	my $options = shift;
+	if (ref $options) {
+		if (defined $options->{xmi_model}) {
+			$self->_xmi_load_model($options->{xmi_model});
+		}
+	}
     $self->_build_dom;
     $self;
 }
@@ -311,6 +318,151 @@ sub _load_file ($) {
     };
     carp $@ if $@;
     !$@;
+}
+
+sub _xmi_get_new_id {
+    my $self = shift;
+    return 'xmi.' . $self->{_xmi}->{_id_counter}++;
+}
+
+sub _xmi_create_inheritance {
+    my ($self, $class, $subclass_name) = @_;
+    my $child_id = $self->{_xmi}->{_name2id}->{$subclass_name};
+    my $id = $self->_xmi_get_new_id();
+    
+    my $element = XML::LibXML::Element->new('UML:Generalization');
+    $self->{_xmi}->{_classes_root}->appendChild($element);
+    $self->_xmi_set_default_attribute($element, 'isSpecification', 'false');
+    $element->setAttribute('xmi.id', $id);
+
+    my $child = XML::LibXML::Element->new('UML:Generalization.child');
+    $element->appendChild($child);
+    my $child_xml_class = XML::LibXML::Element->new('UML:Class');
+    $child->appendChild($child_xml_class);
+    $child_xml_class->setAttribute('xmi.idref', $child_id);
+    
+    my $parent = XML::LibXML::Element->new('UML:Generalization.parent');
+    $element->appendChild($parent);
+    $child_xml_class = XML::LibXML::Element->new('UML:Class');
+    $parent->appendChild($child_xml_class);
+    $child_xml_class->setAttribute('xmi.idref', $class->{xmi_id});
+
+    my $xml_class = $self->{_xmi}->{_classes_hash}->{$subclass_name};
+    return unless defined $xml_class;
+    my $generalization = XML::LibXML::Element->new('UML:Generalization');
+    $generalization->setAttribute('xmi.idref', $id);
+    my $generalizableElement = XML::LibXML::Element->new('UML:GeneralizableElement.generalization');
+    $generalizableElement->appendChild($generalization);
+    $xml_class->appendChild($generalizableElement);
+}
+
+sub _xmi_write_method {
+    my ($self, $parent_node, $class, $method) = @_;
+    
+    my $id = $self->_xmi_get_new_id();
+    my $visibility = 'public';
+    $visibility = 'private' if substr($method, 0, 1) eq '_';
+    my $ownerScope = 'instance';
+    $ownerScope = 'classifier' if $method =~ /^[A-Z]/o;
+
+    my $xml_method = $self->_xmi_add_element($parent_node, 'UML:Operation', $method);
+
+    $xml_method->setAttribute('xmi.id', $id);
+    $xml_method->setAttribute('visibility', $visibility);
+    $xml_method->setAttribute('ownerScope', $ownerScope);
+    $self->_xmi_set_default_attribute($xml_method, 'concurrency', 'sequential');
+    $self->_xmi_set_default_attribute($xml_method, $_, 'false') foreach qw(isSpecification isQuery isRoot isLeaf isAbstract);
+}
+
+sub _xmi_write_class {
+    my ($self, $class) = @_;
+
+    my $xml_class = $self->_xmi_add_element($self->{_xmi}->{_classes_root}, 'UML:Class', $class->{name});
+    $self->{_xmi}->{_classes_hash}->{$class->{name}} = $xml_class;
+    $xml_class->setAttribute('xmi.id', $class->{xmi_id});
+    $xml_class->setAttribute('visibility', 'public');
+    $self->_xmi_set_default_attribute($xml_class, $_, 'false') foreach qw(isSpecification isRoot isLeaf isAbstract isActive);
+
+    my $uml_classifier =  XML::LibXML::Element->new('UML:Classifier.feature');
+    $xml_class->appendChild($uml_classifier);
+
+    $self->_xmi_write_method($uml_classifier, $class, $_) foreach @{$class->{methods}};
+    $self->_xmi_create_inheritance($class, $_) foreach @{$class->{subclasses}};
+}
+
+sub _xmi_set_id {
+    my ($self, $class) = @_;
+    $class->{xmi_id} = $self->_xmi_get_new_id();
+    $self->{_xmi}->{_name2id}->{$class->{name}} = $class->{xmi_id};
+}
+
+sub _xmi_add_element {
+    my ($self, $parent, $class, $name) = @_;
+    my $node;
+    foreach $node ($parent->getElementsByTagName($class)) {
+        if ($node->getAttribute('name') eq $name) {
+            return $node;
+        }
+    }
+    $node = $self->{_xmi}->{_document}->createElement($class);
+    $node->setAttribute('name', $name);
+    $parent->appendChild($node);
+    return $node;
+}
+
+sub _xmi_set_default_attribute {
+    my ($self, $node, $name, $value) = @_;
+    return if defined $node->getAttribute($name);
+    $node->setAttribute($name, $value);
+}
+
+sub _xmi_load_model {
+    my ($self, $fname) = @_;
+	$self->{_xmi}->{_document} = XML::LibXML->new()->parse_file($fname);
+}
+	
+sub _xmi_init_xml {
+    my ($self, $fname) = @_;
+    unless (defined $self->{_xmi}->{_document}) {
+        $self->{_xmi}->{_document} = XML::LibXML::Document->new('1.0', 'UTF-8');
+    }
+    my $doc = $self->{_xmi}->{_document};
+    
+    my $xmi_root = $doc->createElement('XMI');
+    $xmi_root->setAttribute('xmi.version', '1.2');
+    $xmi_root->setAttribute('xmlns:UML', 'org.omg.xmi.namespace.UML');
+    my $generate_time = POSIX::asctime(localtime(time()));
+    chomp($generate_time);
+    $xmi_root->setAttribute('timestamp', $generate_time);
+    $doc->setDocumentElement($xmi_root);
+
+    my $xmi_content = $doc->createElement('XMI.content');
+    $xmi_root->appendChild($xmi_content);
+    
+    my $uml_model = $self->_xmi_add_element($xmi_content, 'UML:Model', $fname || '');
+    $uml_model->setAttribute('xmi.id', $self->_xmi_get_new_id());
+    $self->_xmi_set_default_attribute($uml_model, $_, 'false') foreach qw(isSpecification isRoot isLeaf isAbstract);
+
+    $self->{_xmi}->{_classes_root} = $doc->createElement('UML:Namespace.ownedElement');
+    $uml_model->appendChild($self->{_xmi}->{_classes_root});
+
+    return $doc;
+}
+
+sub as_xmi {
+    my ($self, $fname) = @_;
+    $self->_build_dom;
+    $self->{_xmi} ||= {};
+    $self->{_xmi}->{_id_counter} = 1;
+    $self->{_xmi}->{_name2id} = {};
+    $self->_xmi_set_id($_) foreach @{$self->{classes}};
+    my $doc = $self->_xmi_init_xml($fname);
+    $self->_xmi_write_class($_) foreach @{$self->{classes}};
+	if ($fname) {
+		$doc->toFile($fname, 2);
+	} else {
+		return $doc;
+	}
 }
 
 sub as_dot {
@@ -643,6 +795,11 @@ Return the Graphviz dot source code generated by C<$obj>.
 
 Set the dot source code used by C<$obj>.
 
+=item C<< $obj->as_xmi($filename) >>
+
+Generate XMI model file when C<$filename> is given. It returns
+XML::LibXML::Document object when C<$filename> is not given.
+
 =back
 
 =head1 PROPERTIES
@@ -787,18 +944,20 @@ It has anonymous access to all.
 If you have the tuits to help out with this module, please let me know.
 I have a dream to keep sending out commit bits like Audrey Tang. ;-)
 
-=head1 AUTHOR
+=head1 AUTHORS
 
-Agent Zhang E<lt>agentzh@gmail.comE<gt>
+Agent Zhang E<lt>agentzh@gmail.comE<gt>,
+Maxim Zenin E<lt>max@foggy.ruE<gt>
 
 =head1 COPYRIGHT
 
 Copyright 2006 by Agent Zhang. All rights reserved.
+XMI export by Maxim Zenin, 2007.
 
 This library is free software; you can redistribute it and/or modify it under
 the same terms as perl itself.
 
 =head1 SEE ALSO
 
-L<umlclass.pl>, L<Autodia>, L<UML::Sequence>, L<PPI>, L<Class::Inspector>.
+L<umlclass.pl>, L<Autodia>, L<UML::Sequence>, L<PPI>, L<Class::Inspector>, L<XML::LibXML>.
 
