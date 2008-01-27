@@ -10,7 +10,7 @@ use Template;
 use Carp qw(carp);
 use File::Spec;
 use List::MoreUtils 'any';
-use XML::LibXML;
+use XML::LibXML ();
 
 require Exporter;
 our @ISA = qw(Exporter);
@@ -399,9 +399,11 @@ sub _xmi_set_id {
 sub _xmi_add_element {
     my ($self, $parent, $class, $name) = @_;
     my $node;
-    foreach $node ($parent->getElementsByTagName($class)) {
-        if ($node->getAttribute('name') eq $name) {
-            return $node;
+    if (defined $name) {
+        foreach $node ($parent->getElementsByTagName($class)) {
+            if ($node->getAttribute('name') eq $name) {
+                return $node;
+            }
         }
     }
     $node = $self->{_xmi}->{_document}->createElement($class);

@@ -17,6 +17,7 @@ requires        ('Class::Inspector' => '1.16');
 requires        ('IPC::Run3');
 requires        ('List::MoreUtils');
 requires        ('Template');
+requires        ('XML::LibXML');
 
 build_requires  ('Test::More');
 
