@@ -874,7 +874,7 @@ this module name.
 
 =item *
 
-Unlike L<Autodia>, at this moment only Graphviz backend is provided.
+Unlike L<Autodia>, at this moment only Graphviz and XMI backends are provided.
 
 =item *
 
