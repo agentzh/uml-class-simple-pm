@@ -4,6 +4,8 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
+our $VERSION = '0.10';
+
 use Class::Inspector;
 use IPC::Run3;
 use Template;
@@ -18,8 +20,6 @@ our @EXPORT = qw(
     classes_from_runtime classes_from_files
     exclude_by_paths grep_by_paths
 );
-
-our $VERSION = '0.09';
 
 my $tt = Template->new;
 my $dot_template;
@@ -277,6 +277,8 @@ sub _build_dom {
             name => $pkg, methods => [],
             properties => [], subclasses => [],
         };
+        # XXX FIXME: should we gather only the functions defined in
+        #  the current class only (w/o those inherited from ancestors)
         my $func = Class::Inspector->functions($pkg);
         if ($func and @$func) {
             if ($public_only) {
@@ -329,7 +331,7 @@ sub _xmi_create_inheritance {
     my ($self, $class, $subclass_name) = @_;
     my $child_id = $self->{_xmi}->{_name2id}->{$subclass_name};
     my $id = $self->_xmi_get_new_id();
-    
+
     my $element = XML::LibXML::Element->new('UML:Generalization');
     $self->{_xmi}->{_classes_root}->appendChild($element);
     $self->_xmi_set_default_attribute($element, 'isSpecification', 'false');
@@ -340,7 +342,7 @@ sub _xmi_create_inheritance {
     my $child_xml_class = XML::LibXML::Element->new('UML:Class');
     $child->appendChild($child_xml_class);
     $child_xml_class->setAttribute('xmi.idref', $child_id);
-    
+
     my $parent = XML::LibXML::Element->new('UML:Generalization.parent');
     $element->appendChild($parent);
     $child_xml_class = XML::LibXML::Element->new('UML:Class');
@@ -358,7 +360,7 @@ sub _xmi_create_inheritance {
 
 sub _xmi_write_method {
     my ($self, $parent_node, $class, $method) = @_;
-    
+
     my $id = $self->_xmi_get_new_id();
     my $visibility = 'public';
     $visibility = 'private' if substr($method, 0, 1) eq '_';
@@ -429,7 +431,7 @@ sub _xmi_init_xml {
         $self->{_xmi}->{_document} = XML::LibXML::Document->new('1.0', 'UTF-8');
     }
     my $doc = $self->{_xmi}->{_document};
-    
+
     my $xmi_root = $doc->createElement('XMI');
     $xmi_root->setAttribute('xmi.version', '1.2');
     $xmi_root->setAttribute('xmlns:UML', 'org.omg.xmi.namespace.UML');
@@ -440,7 +442,7 @@ sub _xmi_init_xml {
 
     my $xmi_content = $doc->createElement('XMI.content');
     $xmi_root->appendChild($xmi_content);
-    
+
     my $uml_model = $self->_xmi_add_element($xmi_content, 'UML:Model', $fname || '');
     $uml_model->setAttribute('xmi.id', $self->_xmi_get_new_id());
     $self->_xmi_set_default_attribute($uml_model, $_, 'false') foreach qw(isSpecification isRoot isLeaf isAbstract);
@@ -584,7 +586,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.09 released by April 10, 2007.
+This document describes C<UML::Class::Simple> 0.10 released by June 20, 2008.
 
 =head1 SYNOPSIS
 
@@ -616,7 +618,7 @@ This document describes C<UML::Class::Simple> 0.09 released by April 10, 2007.
 =head1 DESCRIPTION
 
 C<UML::Class::Simple> is a Perl CPAN module that generates UML class
-diagrams (PNG format, GIF format, or dot source) automatically
+diagrams (PNG format, GIF format, XMI format, or dot source) automatically
 from Perl 5 source or Perl 5 runtime.
 
 Perl developers can use this module to obtain pretty class diagrams
@@ -948,16 +950,16 @@ I have a dream to keep sending out commit bits like Audrey Tang. ;-)
 
 =head1 AUTHORS
 
-Agent Zhang E<lt>agentzh@gmail.comE<gt>,
+Agent Zhang E<lt>agentzh@yahoo.cn<gt>,
 Maxim Zenin E<lt>max@foggy.ruE<gt>
 
 =head1 COPYRIGHT
 
-Copyright 2006 by Agent Zhang. All rights reserved.
+Copyright (c) 2006, 2007, 2008 by Agent Zhang.
 XMI export by Maxim Zenin, 2007.
 
 This library is free software; you can redistribute it and/or modify it under
-the same terms as perl itself.
+the same terms as perl itself, either Artistic and GPL.
 
 =head1 SEE ALSO
 

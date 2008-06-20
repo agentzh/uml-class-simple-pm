@@ -1,3 +1,9 @@
+Change Log for UML::Class::Simple
+
+=version 0.10 (Jun 20, 2008)
+* initial XMI export support added.
+* Added dependency XML::LibXML.
+
 = version 0.09 (Apr 10, 2007)
 * applied a patch for the dot template from usuihiro++, now this module
   should work with more versions of Graphviz :)

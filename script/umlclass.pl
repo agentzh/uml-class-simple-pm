@@ -18,7 +18,7 @@ GetOptions(
     "help|h"        => \my $help,
     "M=s"           => \my @preload_modules,
     "out|o=s"       => \$outfile,
-    "public-only" => \my $public_only,
+    "P|public-only" => \my $public_only,
     "pattern|p=s"   => \my $pattern,
     "recursive|r"   => \my $recursive,
     "size|s=s"      => \my $size,
