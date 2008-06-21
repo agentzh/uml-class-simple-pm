@@ -138,8 +138,14 @@ ok -s $dotfile, "dot file '$dotfile' is not empty";
 my $bin = $painter->as_png;
 ok length($bin) > 1000, 'binary PNG data returned';
 
-$bin = $painter->as_gif;
-ok length($bin) > 1000, 'binary GIF data returned';
+eval { $bin = $painter->as_gif; };
+#$@ = 'Renderer type: "gif" not recognized.';
+SKIP: {
+    skip "gif not supported in your graphviz install", 1
+        if $@ && $@ =~ /"gif" not recognized/;
+
+    ok length($bin) > 1000, 'binary GIF data returned';
+};
 
 # ignore inherited methods and properties
 ok $painter->inherited_methods, 'inherited_methods defaults to true';
