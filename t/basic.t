@@ -146,11 +146,6 @@ ok $painter->inherited_methods, 'inherited_methods defaults to true';
 $painter->inherited_methods(0);
 ok ! $painter->inherited_methods, 'inherited_methods changed to false';
 
-# ignore inherited methods and properties
-ok $painter->inherited_methods, 'inherited_methods defaults to true';
-$painter->inherited_methods(0);
-ok ! $painter->inherited_methods, 'inherited_methods changed to false';
-
 $dom = $painter->as_dom;
 is_deeply $dom, {
     classes => [
