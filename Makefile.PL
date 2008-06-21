@@ -11,6 +11,7 @@ install_script  ('script/umlclass.pl');
 requires        ('File::Slurp');
 requires        ('YAML::Syck');
 requires        ('Carp');
+requires        ('Devel::Peek');
 requires        ('File::Spec');
 requires        ('PPI');
 requires        ('Class::Inspector' => '1.16');

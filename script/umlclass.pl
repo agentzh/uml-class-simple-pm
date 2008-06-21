@@ -16,6 +16,7 @@ my $outfile = 'a.png';
 GetOptions(
     "color|c=s"     => \my $node_color,
     "help|h"        => \my $help,
+    "without-inherited-methods" => \my $without_inherited_methods,
     "M=s"           => \my @preload_modules,
     "out|o=s"       => \$outfile,
     "P|public-only" => \my $public_only,
@@ -92,6 +93,7 @@ if (!$painter) {
 }
 
 $painter->public_only($public_only) if $public_only;
+$painter->inherited_methods(0) if $without_inherited_methods;
 $painter->size($width, $height) if $width and $height;
 $painter->node_color($node_color) if $node_color;
 #$painter->root_at($root_class) if $root_class;
@@ -168,6 +170,9 @@ Options:
     --size <w>x<h>
     -s <w>x<h>   Specify the width and height (in inches) for the
                  output images. For instance, 3.2x6.3 and 4x8.
+
+    --without-inherited-methods
+                 Do not show methods from parent classes.
 
 Report bugs or wishlist to Agent Zhang <agentzh\@gmail.com>.
 _EOC_
@@ -450,6 +455,10 @@ Specifies the width and height of the resulting image. For example:
     --size 5x6
 
 where the unit is inches instead of pixels.
+
+=item --without-inherited-methods
+
+Do not show methods from parent classes.
 
 =back
 

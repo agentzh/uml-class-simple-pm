@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 36;
+use Test::More tests => 39;
 use Config;
 use UML::Class::Simple;
 #use Data::Dumper::Simple;
@@ -81,14 +81,16 @@ is_deeply $dom, {
         { name       => 'UML::Class::Simple',
           methods    => [qw(
                 _as_image _build_dom _gen_paths _load_file
-                _normalize_path _runtime_packages
+                _normalize_path _property _runtime_packages
 		_xmi_add_element _xmi_create_inheritance 
 		_xmi_get_new_id _xmi_init_xml _xmi_load_model 
 		_xmi_set_default_attribute _xmi_set_id 
 		_xmi_write_class _xmi_write_method 
                 any as_dom as_dot as_gif as_png as_xmi carp
                 classes_from_files classes_from_runtime
+                confess
                 exclude_by_paths grep_by_paths
+                inherited_methods
                 new node_color public_only
                 run3 set_dom set_dot size
                         )],
@@ -110,7 +112,9 @@ is_deeply $dom, {
           methods    => [qw(
                 any as_dom as_dot as_gif as_png as_xmi carp
                 classes_from_files classes_from_runtime
+                confess
                 exclude_by_paths grep_by_paths
+                inherited_methods
                 new node_color public_only
                 run3 set_dom set_dot size
                         )],
@@ -136,3 +140,28 @@ ok length($bin) > 1000, 'binary PNG data returned';
 
 $bin = $painter->as_gif;
 ok length($bin) > 1000, 'binary GIF data returned';
+
+# ignore inherited methods and properties
+ok $painter->inherited_methods, 'inherited_methods defaults to true';
+$painter->inherited_methods(0);
+ok ! $painter->inherited_methods, 'inherited_methods changed to false';
+
+$dom = $painter->as_dom;
+is_deeply $dom, {
+    classes => [
+        { name       => 'UML::Class::Simple',
+          methods    => [qw(
+                as_dom as_dot as_gif as_png as_xmi
+                classes_from_files classes_from_runtime
+                exclude_by_paths grep_by_paths
+                inherited_methods
+                new node_color public_only
+                set_dom set_dot size
+                        )],
+          properties => [],
+          subclasses => [],
+        }
+    ],
+}, '$dom structure ok';
+
+
