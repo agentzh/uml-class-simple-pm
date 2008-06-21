@@ -1,7 +1,7 @@
 ---
 abstract: 'Render simple UML class diagrams, by loading the code'
 author:
-  - 'Agent Zhang <agentzh@gmail.com>,'
+  - 'Agent Zhang <agentzh@yahoo.cn<gt>,'
 build_requires:
   Test::More: 0
 distribution_type: module
