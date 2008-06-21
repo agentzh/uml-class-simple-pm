@@ -76,7 +76,7 @@ my ($stdout, $stderr);
         "umlclass -o $outfile -I $Config{archlibexp} --exclude $Config{archlibexp}";
     is $stdout, '',
         "stdout ok - $outfile generated.";
-    is $stderr, "error: no class found.\n";
+    like $stderr, qr/error: no class found\./;
     ok !-f $outfile, "$outfile exists";
 }
 
