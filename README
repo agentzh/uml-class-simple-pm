@@ -3,7 +3,7 @@ NAME
     code
 
 VERSION
-    This document describes "UML::Class::Simple" 0.10 released by June 20,
+    This document describes "UML::Class::Simple" 0.11 released by June 22,
     2008.
 
 SYNOPSIS
@@ -29,6 +29,9 @@ SYNOPSIS
 
         # only show public methods and properties
         $painter->public_only(1);
+
+        # hide all methods from parent classes
+        $painter->inherited_methods(0);
 
         $painter->as_png('my_module.png');
 
@@ -183,6 +186,12 @@ PROPERTIES
         When the "public_only" property is set to true, only public methods
         or properties are shown. It defaults to false.
 
+    "$obj->inherited_methods($bool)"
+    "$bool = $obj->inherited_methods"
+        When the "inherited_methods" property is set to false, then all
+        methods, inherited from parent classes, are not shown. It defaults
+        to true.
+
     "$obj->node_color($color)"
     "$color = $obj->node_color"
         Set/get the background color for the class nodes. It defaults to
@@ -222,7 +231,8 @@ LIMITATIONS
         believe other subtle relations may mess up the Graphviz layouter.
         Hence the "::Simple" suffix in this module name.
 
-    *   Unlike Autodia, at this moment only Graphviz backend is provided.
+    *   Unlike Autodia, at this moment only Graphviz and XMI backends are
+        provided.
 
     *   There's no way to recognize *real* perl classes automatically. After
         all, Perl 5's classes are implemented by packages. I think Perl 6
@@ -274,11 +284,11 @@ SOURCE CONTROL
     I have a dream to keep sending out commit bits like Audrey Tang. ;-)
 
 AUTHORS
-    Agent Zhang <agentzh@gmail.com>, Maxim Zenin <max@foggy.ru>
+    Agent Zhang <agentzh@yahoo.cn<gt>, Maxim Zenin <max@foggy.ru>
 
 COPYRIGHT
-    Copyright (c) 2006, 2007, 2008 by Agent Zhang. XMI export by Maxim
-    Zenin, 2007.
+    Copyright (c) 2006, 2007, 2008 by Agent Zhang. Copyright (c) 2007, 2008
+    by Maxim Zenin.
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as perl itself, either Artistic and GPL.

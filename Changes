@@ -1,5 +1,12 @@
 Change Log for UML::Class::Simple
 
+=version 0.11 (Jun 22, 2008)
+* added the  --without-inherited-methods command-line option to umlclass.pl.
+* added the inherited_methods property added to UML::Class::Simple.
+  It allows the user to filter out all methods, that imported of inherited
+  from other classes.
+* fixed test failures in perl 5.10.x
+
 =version 0.10 (Jun 20, 2008)
 * initial XMI export support added.
 * Added dependency XML::LibXML.

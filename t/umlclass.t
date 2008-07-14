@@ -1,4 +1,5 @@
 # test script/umlclass.pl
+# XXX FIXME: should rewrite this .t file in terms of Test::Base
 
 use strict;
 no warnings;
@@ -361,3 +362,4 @@ _EOC_
     like $dot, qr/FAST::Struct::Seq/, 'FAST::Struct::Seq is in the dot source';
     like $dot, qr/digraph uml_class_diagram/, 'dot ok';
 }
+

@@ -94,6 +94,7 @@ if (!$painter) {
 
 $painter->public_only($public_only) if $public_only;
 $painter->inherited_methods(0) if $without_inherited_methods;
+#die "inherited_methods: ", $painter->inherited_methods;
 $painter->size($width, $height) if $width and $height;
 $painter->node_color($node_color) if $node_color;
 #$painter->root_at($root_class) if $root_class;
@@ -221,6 +222,8 @@ umlclass.pl - Utility to generate UML class diagrams from Perl source or runtime
 
     $ umlclass.pl -o blah.png -p Blah -r ./blib
 
+    $ umlclass.pl --without-inherited-methods -o blah.png -r lib
+
 =head1 DESCRIPTION
 
 This is a simple command-line frontend for the L<UML::Class::Simple> module.
@@ -259,6 +262,15 @@ L<http://perlcabal.org/agent/images/moose_big.png>.
 
 Before trying out these commands yourself, please make sure that you have 
 L<Moose> already installed. (It's also on CPAN, btw.)
+
+=head2 Perl libraries that use Moose
+
+Perl classes that inherit from Moose will have tons of "meta methods" like
+C<before>, C<after>, C<has>, and C<meta>, which are not very interesting
+while plotting the class diagram. So it's common practice to specify
+the C<--without-inherited-methods> option like this:
+
+  $ umlclass.pl --without-inherited-methods -o uml.png -r lib
 
 =head2 Draw Alias's PPI
 
@@ -459,6 +471,10 @@ where the unit is inches instead of pixels.
 =item --without-inherited-methods
 
 Do not show methods from parent classes.
+
+All inherited and imported methods will be excluded. Note that if a method
+is overridden in the current subclass, it will still be included even if
+it appears in one of its ancestors.
 
 =back
 

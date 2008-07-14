@@ -4,7 +4,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 use Carp qw(carp confess);
 use Class::Inspector;
@@ -160,11 +160,11 @@ sub new {
     my $options = shift;
     if (ref($options) eq 'HASH') {
         $self->{inherited_methods} = $options->{inherited_methods};
-		if (defined $options->{xmi_model}) {
-			$self->_xmi_load_model($options->{xmi_model});
-		}
-	}
-    $self->_build_dom;
+        if (defined $options->{xmi_model}) {
+            $self->_xmi_load_model($options->{xmi_model});
+        }
+    }
+    #$self->_build_dom;
     $self;
 }
 
@@ -444,7 +444,7 @@ sub _xmi_set_default_attribute {
 
 sub _xmi_load_model {
     my ($self, $fname) = @_;
-	$self->{_xmi}->{_document} = XML::LibXML->new()->parse_file($fname);
+    $self->{_xmi}->{_document} = XML::LibXML->new()->parse_file($fname);
 }
 
 sub _xmi_init_xml {
@@ -484,11 +484,11 @@ sub as_xmi {
     $self->_xmi_set_id($_) foreach @{$self->{classes}};
     my $doc = $self->_xmi_init_xml($fname);
     $self->_xmi_write_class($_) foreach @{$self->{classes}};
-	if ($fname) {
-		$doc->toFile($fname, 2);
-	} else {
-		return $doc;
-	}
+    if ($fname) {
+        $doc->toFile($fname, 2);
+    } else {
+        return $doc;
+    }
 }
 
 sub as_dot {
@@ -608,7 +608,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.10 released by June 20, 2008.
+This document describes C<UML::Class::Simple> 0.11 released by June 22, 2008.
 
 =head1 SYNOPSIS
 
@@ -983,13 +983,13 @@ I have a dream to keep sending out commit bits like Audrey Tang. ;-)
 
 =head1 AUTHORS
 
-Agent Zhang E<lt>agentzh@yahoo.cn<gt>,
-Maxim Zenin E<lt>max@foggy.ruE<gt>
+Agent Zhang C<< <agentzh@yahoo.cn> >>,
+Maxim Zenin C<< <max@foggy.ru> >>.
 
 =head1 COPYRIGHT
 
 Copyright (c) 2006, 2007, 2008 by Agent Zhang.
-XMI export by Maxim Zenin, 2007.
+Copyright (c) 2007, 2008 by Maxim Zenin.
 
 This library is free software; you can redistribute it and/or modify it under
 the same terms as perl itself, either Artistic and GPL.
