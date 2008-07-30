@@ -3,7 +3,7 @@ NAME
     code
 
 VERSION
-    This document describes "UML::Class::Simple" 0.11 released by June 22,
+    This document describes "UML::Class::Simple" 0.12 released by June 22,
     2008.
 
 SYNOPSIS
@@ -50,6 +50,12 @@ DESCRIPTION
     figures themselves or provide any specs other than the source code of
     their own libraries that they want to depict. This module does all the
     jobs for them! :)
+
+    Methods created on-the-fly (in BEGIN or some such) can be inspected.
+    Accessors created by modules like Class::Accessor and
+    Class::Accessor::Fast are recognized as "properties" rather than
+    "methods". Intelligent distingishing between Perl methods and properties
+    other than that is not provided.
 
     You know, I was really impressed by the outputs of UML::Sequence, so I
     decided to find something to (automatically) get pretty class diagrams
@@ -224,8 +230,10 @@ INSTALLATION
 
 LIMITATIONS
     *   It's pretty hard to distinguish perl methods from properties
-        (actually they're both implemented by subs in perl). If you have any
-        good thoughts on this issue, please drop me a line.
+        (actually they're both implemented by subs in perl). Currently only
+        accessors created by Class::Accessor::Fast are provided. (Thanks to
+        the patch from Adam Lounds!) If you have any other good idea on this
+        issue, please drop me a line ;)
 
     *   Only the inheritance relationships are shown in the images. I
         believe other subtle relations may mess up the Graphviz layouter.
@@ -248,7 +256,8 @@ LIMITATIONS
 TODO
     *   Add more unit tests.
 
-    *   Add support for more image formats, such as as_ps, as_jpg, and etc.
+    *   Add support for more image formats, such as "as_ps", "as_jpg", and
+        etc.
 
     *   Plot class relationships other than inheritance on the user's
         request.
@@ -284,7 +293,7 @@ SOURCE CONTROL
     I have a dream to keep sending out commit bits like Audrey Tang. ;-)
 
 AUTHORS
-    Agent Zhang <agentzh@yahoo.cn<gt>, Maxim Zenin <max@foggy.ru>
+    Agent Zhang "<agentzh@yahoo.cn>", Maxim Zenin "<max@foggy.ru>".
 
 COPYRIGHT
     Copyright (c) 2006, 2007, 2008 by Agent Zhang. Copyright (c) 2007, 2008

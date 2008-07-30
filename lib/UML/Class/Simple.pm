@@ -4,8 +4,9 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
+#use Smart::Comments;
 use Carp qw(carp confess);
 use Class::Inspector;
 use Devel::Peek ();
@@ -291,11 +292,29 @@ sub _build_dom {
             name => $pkg, methods => [],
             properties => [], subclasses => [],
         };
+
         # If you want to gather only the functions defined in
         #  the current class only (w/o those inherited from ancestors),
         #  set inherited_methods property to false (default value is true).
         my $methods = Class::Inspector->methods($pkg, 'expanded');
         if ($methods and ref($methods) eq 'ARRAY') {
+            my %functions = map { $_->[2] => 1 } @$methods; # create hash from array
+            ### %functions
+            my @accessors = grep { /^_.*_accessor$/ } keys %functions;
+            ### @accessors
+            foreach my $accessor (@accessors) {
+                if ($accessor =~ /^_(.*)_accessor$/ ) {
+                    my $property = $1;
+                    if (exists $functions{$property}) {
+                        delete $functions{$property};
+                        delete $functions{"_${property}_accessor"};
+                        push @{ $classes[-1]->{properties} }, $property;
+                    }
+                }
+            }
+            @{ $classes[-1]->{properties} } = sort @{ $classes[-1]->{properties} };
+            @$methods = grep { exists $functions{$_->[2]} } @$methods;
+
             foreach my $method (@$methods) {
                 next if $method->[1] ne $pkg;
                 if (! $self->{inherited_methods}) {
@@ -308,6 +327,10 @@ sub _build_dom {
                 push @{$classes[-1]->{methods}}, $method;
             }
         }
+
+
+
+
         my $subclasses = Class::Inspector->subclasses($pkg);
         if ($subclasses) {
             no strict 'refs';
@@ -608,7 +631,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.11 released by June 22, 2008.
+This document describes C<UML::Class::Simple> 0.12 released by June 22, 2008.
 
 =head1 SYNOPSIS
 
@@ -656,6 +679,8 @@ The users no longer need to drag a mouse on the screen so as to draw
 figures themselves or provide any specs other than the source code of
 their own libraries that they want to depict. This module does all the
 jobs for them! :)
+
+Methods created on-the-fly (in BEGIN or some such) can be inspected. Accessors created by modules like L<Class::Accessor> and L<Class::Accessor::Fast> are recognized as "properties" rather than "methods". Intelligent distingishing between Perl methods and properties other than that is not provided.
 
 You know, I was really impressed by the outputs of L<UML::Sequence>, so I
 decided to find something to (automatically) get pretty class diagrams
@@ -895,8 +920,7 @@ Note that it's recommended to use the C<cpan> utility to install CPAN modules.
 =item *
 
 It's pretty hard to distinguish perl methods from properties (actually they're both
-implemented by subs in perl). If you have any good thoughts on this issue,
-please drop me a line.
+implemented by subs in perl). Currently only accessors created by L<Class::Accessor::Fast> are provided. (Thanks to the patch from Adam Lounds!) If you have any other good idea on this issue, please drop me a line ;)
 
 =item *
 
@@ -936,7 +960,7 @@ Add more unit tests.
 
 =item *
 
-Add support for more image formats, such as as_ps, as_jpg, and etc.
+Add support for more image formats, such as C<as_ps>, C<as_jpg>, and etc.
 
 =item *
 
@@ -962,8 +986,7 @@ it to L<http://rt.cpan.org> or contact the author directly.
 
 I must thank Adam Kennedy (Alias) for writing the excellent L<PPI> and
 L<Class::Inspector> modules. L<umlclass.pl> uses the former to extract
-package names
-from user's F<.pm> files or the latter to retrieve the function list of a
+package names from user's F<.pm> files or the latter to retrieve the function list of a
 specific package.
 
 I'm also grateful to Christopher Malon since he has (unintentionally)

@@ -82,10 +82,10 @@ is_deeply $dom, {
           methods    => [qw(
                 _as_image _build_dom _gen_paths _load_file
                 _normalize_path _property _runtime_packages
-		_xmi_add_element _xmi_create_inheritance 
-		_xmi_get_new_id _xmi_init_xml _xmi_load_model 
-		_xmi_set_default_attribute _xmi_set_id 
-		_xmi_write_class _xmi_write_method 
+		_xmi_add_element _xmi_create_inheritance
+		_xmi_get_new_id _xmi_init_xml _xmi_load_model
+		_xmi_set_default_attribute _xmi_set_id
+		_xmi_write_class _xmi_write_method
                 any as_dom as_dot as_gif as_png as_xmi carp
                 classes_from_files classes_from_runtime
                 confess
