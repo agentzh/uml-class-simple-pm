@@ -32,6 +32,17 @@ GetOptions(
 
 help(0) if $help;
 
+# We need to add the include paths to @INC so that modules will be found
+unshift @INC, @include_paths;
+
+# We need preloaded modules to be loaded, really.  Not pretended.
+foreach my $mod (@preload_modules) {
+    my $loc = $mod . ".pm";
+    $loc =~ s{::}{/}gsmx;
+    eval { require $loc; };
+    if ($@) { warn "can't pre-load $mod: $@\n"; }
+}
+
 my ($width, $height);
 if ($size) {
     if ($size !~ /(?x) ([\d\.]+) x ([\d\.]+) /) {

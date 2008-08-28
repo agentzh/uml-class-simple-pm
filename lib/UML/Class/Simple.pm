@@ -4,7 +4,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-our $VERSION = '0.12';
+our $VERSION = '0.14';
 
 #use Smart::Comments;
 use Carp qw(carp confess);

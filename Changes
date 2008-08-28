@@ -1,5 +1,10 @@
 Change Log for UML::Class::Simple
 
+=version 0.14 (Aug 28, 2008)
+* applied the patch to umlclass.pl from Thomas Erskine:
+** the -I option now augments @INC
+** the -M option now preloads the modules eagerly.
+
 =version 0.12 (Jul 30, 2008)
 * applied the patch from Adam Lounds for intelligently recognize accessors created by Class::Accessor and Class::Accessor::Fast as "class properties" rather than "class methods" in the UML structure.
 
