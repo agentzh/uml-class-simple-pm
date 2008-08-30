@@ -4,6 +4,7 @@ t/basic.t
 t/pod.t
 t/pod-coverage.t
 t/umlclass.t
+t/dot-prog.t
 t/classes-from-runtime.t
 t/class-accessor-fast.t
 t/class-accessor-pbp.t

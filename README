@@ -182,6 +182,14 @@ METHODS
         Generate XMI model file when $filename is given. It returns
         XML::LibXML::Document object when $filename is not given.
 
+    "can_run($path)"
+        Copied from IPC::Cmd to test if $path is a runnable program. This
+        code is copyright by IPC::Cmd's author.
+
+    "$prog = $obj->dot_prog()"
+    "$obj->dot_prog($prog)"
+        Get or set the dot program path.
+
 PROPERTIES
     "$obj->size($width, $height)"
     "($width, $height) = $obj->size"
