@@ -195,6 +195,47 @@ sub node_color {
     }
 }
 
+sub dot_prog {
+    my $self = shift;
+    if (@_) {
+        my $cmd = shift;
+        can_run($cmd) or die "ERROR: The dot program ($cmd) cannot be found or be run.\n";
+        $self->{dot_prog} = $cmd;
+    } else {
+        $self->{dot_prog} || 'dot';
+    }
+}
+
+# copied from IPC::Cmd. Copyright by IPC::Cmd's author.
+sub can_run {
+    my $command = shift;
+
+    # a lot of VMS executables have a symbol defined
+    # check those first
+    if ( $^O eq 'VMS' ) {
+        require VMS::DCLsym;
+        my $syms = VMS::DCLsym->new;
+        return $command if scalar $syms->getsym( uc $command );
+    }
+
+    require Config;
+    require File::Spec;
+    require ExtUtils::MakeMaker;
+
+    if( File::Spec->file_name_is_absolute($command) ) {
+        return MM->maybe_command($command);
+
+    } else {
+        for my $dir (
+            (split /\Q$Config::Config{path_sep}\E/, $ENV{PATH}),
+            File::Spec->curdir
+        ) {
+            my $abs = File::Spec->catfile($dir, $command);
+            return $abs if $abs = MM->maybe_command($abs);
+        }
+    }
+}
+
 sub _property {
     my $self = shift;
     my $property_name = shift;
@@ -203,6 +244,7 @@ sub _property {
         $self->_build_dom(1);
     } else {
         $self->{$property_name};
+
     }
 }
 
@@ -236,7 +278,8 @@ sub _as_image {
         #$self->_build_dom(1);
         #warn Dump($self->as_dom);
     #}
-    my @cmd = ('dot', '-T', $type);
+    my @cmd = ($self->dot_prog(), '-T', $type);
+    #my @cmd = ('dot', '-T', $type);
     if ($fname) {
         push @cmd, '-o', $fname;
     }
@@ -871,6 +914,17 @@ Set the dot source code used by C<$obj>.
 
 Generate XMI model file when C<$filename> is given. It returns
 XML::LibXML::Document object when C<$filename> is not given.
+
+=item C<< can_run($path) >>
+
+Copied from L<IPC::Cmd> to test if $path is a runnable program. This code
+is copyright by IPC::Cmd's author.
+
+=item C<< $prog = $obj->dot_prog() >>
+
+=item C<< $obj->dot_prog($prog) >>
+
+Get or set the dot program path.
 
 =back
 

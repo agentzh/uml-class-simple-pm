@@ -86,9 +86,10 @@ is_deeply $dom, {
 		_xmi_get_new_id _xmi_init_xml _xmi_load_model
 		_xmi_set_default_attribute _xmi_set_id
 		_xmi_write_class _xmi_write_method
-                any as_dom as_dot as_gif as_png as_xmi carp
+                any as_dom as_dot as_gif as_png as_xmi
+                can_run carp
                 classes_from_files classes_from_runtime
-                confess
+                confess dot_prog
                 exclude_by_paths grep_by_paths
                 inherited_methods
                 new node_color public_only
@@ -110,9 +111,10 @@ is_deeply $dom, {
     classes => [
         { name       => 'UML::Class::Simple',
           methods    => [qw(
-                any as_dom as_dot as_gif as_png as_xmi carp
+                any as_dom as_dot as_gif as_png as_xmi
+                can_run carp
                 classes_from_files classes_from_runtime
-                confess
+                confess dot_prog
                 exclude_by_paths grep_by_paths
                 inherited_methods
                 new node_color public_only
@@ -158,7 +160,9 @@ is_deeply $dom, {
         { name       => 'UML::Class::Simple',
           methods    => [qw(
                 as_dom as_dot as_gif as_png as_xmi
+                can_run
                 classes_from_files classes_from_runtime
+                dot_prog
                 exclude_by_paths grep_by_paths
                 inherited_methods
                 new node_color public_only

@@ -1,5 +1,8 @@
 Change Log for UML::Class::Simple
 
+=version 0.15
+* added support for the best practice feature of Class::Accessor and applied Thomas Erskine++'s patch for its tests.
+
 =version 0.14 (Aug 28, 2008)
 * applied the patch to umlclass.pl from Thomas Erskine:
 ** the -I option now augments @INC

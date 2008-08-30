@@ -12,6 +12,7 @@ use UML::Class::Simple;
 my $ext_regex = qr/(?:\.pl|\.pm)$/i;
 
 my $outfile = 'a.png';
+my $dot_prog = $ENV{'UMLCLASS_DOT'} || 'dot';
 
 GetOptions(
     "color|c=s"     => \my $node_color,
@@ -23,6 +24,7 @@ GetOptions(
     "pattern|p=s"   => \my $pattern,
     "recursive|r"   => \my $recursive,
     "size|s=s"      => \my $size,
+    "dot=s"         => \$dot_prog,
     "include|I=s"   => \my @include_paths,
     "exclude|E=s"   => \my @exclude_paths,
 ) or help(1);
@@ -103,6 +105,7 @@ if (!$painter) {
     }
 }
 
+$painter->dot_prog($dot_prog);
 $painter->public_only($public_only) if $public_only;
 $painter->inherited_methods(0) if $without_inherited_methods;
 #die "inherited_methods: ", $painter->inherited_methods;
@@ -147,6 +150,8 @@ Usage: $0 [-M module] [-o outfile] [-p regex] [infile... indir...]
 Options:
     --color color
     -c color     Set the node color. Defaults to "#f1e1f4".
+
+    --dot path   Tell it where to find the graphviz program "dot"
 
     --exclude path
     -E path
@@ -389,6 +394,10 @@ Sets the node color. Defaults to C<#f1e1f4>.
 
 You can either specify RGB values like C<#rrggbb> in hex form, or
 color names like "C<grey>" and "C<red>".
+
+=item --dot path
+
+Tell it where the graphviz "dot" program is
 
 =item --exclude path
 

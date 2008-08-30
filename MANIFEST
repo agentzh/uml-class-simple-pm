@@ -6,9 +6,11 @@ t/pod-coverage.t
 t/umlclass.t
 t/classes-from-runtime.t
 t/class-accessor-fast.t
+t/class-accessor-pbp.t
 t/class-accessor.t
 t/data/TestClassAccessor.pm
 t/data/TestClassAccessorFast.pm
+t/data/TestClassAccessorPBP.pm
 t/data/classes-from-runtime.pl
 t/data/filespec.pl
 t/data/UMLClassTest.pm
