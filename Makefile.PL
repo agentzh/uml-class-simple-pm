@@ -2,7 +2,7 @@ use strict;
 use inc::Module::Install;
 
 name            ('UML-Class-Simple');
-perl_version    ('5.004');
+perl_version    ('5.006001');
 license         ('perl');
 all_from        ('lib/UML/Class/Simple.pm');
 

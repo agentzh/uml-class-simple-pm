@@ -292,28 +292,46 @@ sub _build_dom {
             name => $pkg, methods => [],
             properties => [], subclasses => [],
         };
+        my $from_class_accessor = $pkg->isa('Class::Accessor') || $pkg->isa('Class::Accessor::Fast');
+        #accessor_name_for
 
         # If you want to gather only the functions defined in
         #  the current class only (w/o those inherited from ancestors),
         #  set inherited_methods property to false (default value is true).
         my $methods = Class::Inspector->methods($pkg, 'expanded');
         if ($methods and ref($methods) eq 'ARRAY') {
-            my %functions = map { $_->[2] => 1 } @$methods; # create hash from array
-            ### %functions
-            my @accessors = grep { /^_.*_accessor$/ } keys %functions;
-            ### @accessors
-            foreach my $accessor (@accessors) {
-                if ($accessor =~ /^_(.*)_accessor$/ ) {
-                    my $property = $1;
-                    if (exists $functions{$property}) {
-                        delete $functions{$property};
-                        delete $functions{"_${property}_accessor"};
-                        push @{ $classes[-1]->{properties} }, $property;
+            if ($from_class_accessor) {
+                my %functions = map { $_->[2] => 1 } @$methods; # create hash from array
+                ### %functions
+                #my @accessors = map { /^_(.*)_accessor$/; $1 } keys %functions;
+                ### @accessors
+                my $use_best_practice = delete $functions{'accessor_name_for'} && delete $functions{'mutator_name_for'};
+                my %accessors;
+                foreach my $meth (keys %functions) {
+                    next unless $meth;
+                    if ($meth =~ /^_(.*)_accessor$/) {
+                        my $accessor = $1;
+                        if (exists $functions{$accessor}) {
+                            delete $functions{$accessor};
+                            delete $functions{"_${accessor}_accessor"};
+                            push @{ $classes[-1]->{properties} }, $accessor;
+                        }
+                        next;
+                    }
+                    if ($use_best_practice) {
+                        if ($meth =~ /^(?:get|set)_(.+)/) {
+                            my $accessor = $1;
+                            delete $functions{$meth};
+                            if (!$accessors{$accessor}) {
+                                push @{ $classes[-1]->{properties} }, $accessor;
+                                $accessors{$accessor} = 1;
+                            }
+                        }
                     }
                 }
+                @$methods = grep { exists $functions{$_->[2]} } @$methods;
             }
             @{ $classes[-1]->{properties} } = sort @{ $classes[-1]->{properties} };
-            @$methods = grep { exists $functions{$_->[2]} } @$methods;
 
             foreach my $method (@$methods) {
                 next if $method->[1] ne $pkg;
@@ -631,7 +649,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.12 released by June 22, 2008.
+This document describes C<UML::Class::Simple> 0.14 released by August 28, 2008.
 
 =head1 SYNOPSIS
 
