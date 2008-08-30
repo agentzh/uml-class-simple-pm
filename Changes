@@ -1,7 +1,8 @@
 Change Log for UML::Class::Simple
 
-=version 0.15
+=version 0.15 (Aug 31, 2008)
 * added support for the best practice feature of Class::Accessor and applied Thomas Erskine++'s patch for its tests.
+* applied a modified version of Thomas Erskine++'s patch for the new --dot option and better diagnostic messages when the dot prog cannot be found.
 
 =version 0.14 (Aug 28, 2008)
 * applied the patch to umlclass.pl from Thomas Erskine:
