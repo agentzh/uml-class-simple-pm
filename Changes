@@ -1,5 +1,9 @@
 Change Log for UML::Class::Simple
 
+=version 0.16 (Sep 13, 2008)
+* die if run3('dot ...') failed.
+* added a hint to t/basic.t that the invalid argument warning can be safely ignored.
+
 =version 0.15 (Aug 31, 2008)
 * added support for the best practice feature of Class::Accessor and applied Thomas Erskine++'s patch for its tests.
 * applied a modified version of Thomas Erskine++'s patch for the new --dot option and better diagnostic messages when the dot prog cannot be found.

@@ -3,6 +3,7 @@ use warnings;
 
 use Test::More tests => 39;
 use Config;
+use lib 'lib';
 use UML::Class::Simple;
 #use Data::Dumper::Simple;
 
@@ -65,6 +66,7 @@ my ($w, $h) = $painter->size;
 is $w, 5, 'width ok';
 is $h, '3.6', 'height ok';
 
+warn "(Please ignore the warning in the following line.)\n";
 ok ! $painter->size('foo', 'bar'), 'setting size with invalid values';
 is $w, 5, 'width not changed';
 is $h, '3.6', 'height not changed either';
@@ -140,11 +142,12 @@ ok -s $dotfile, "dot file '$dotfile' is not empty";
 my $bin = $painter->as_png;
 ok length($bin) > 1000, 'binary PNG data returned';
 
+undef $bin;
 eval { $bin = $painter->as_gif; };
 #$@ = 'Renderer type: "gif" not recognized.';
 SKIP: {
     skip "gif not supported in your graphviz install", 1
-        if $@ && $@ =~ /"gif" not recognized/;
+        if $@ && $@ =~ /not recognized/;
 
     ok length($bin) > 1000, 'binary GIF data returned';
 };

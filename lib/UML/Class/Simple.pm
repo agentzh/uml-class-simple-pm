@@ -4,7 +4,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 #use Smart::Comments;
 use Carp qw(carp confess);
@@ -286,7 +286,11 @@ sub _as_image {
     my ($img_data, $stderr);
     my $success = run3 \@cmd, \$dot, \$img_data, \$stderr;
     if ($stderr) {
-        carp $stderr;
+        if ($? == 0) {
+            carp $stderr;
+        } else {
+            Carp::croak $stderr;
+        }
     }
     if (!$fname) {
         return $img_data;
@@ -692,7 +696,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.15 released by August 30, 2008.
+This document describes C<UML::Class::Simple> 0.16 released by September 13, 2008.
 
 =head1 SYNOPSIS
 
@@ -854,7 +858,12 @@ binary data when C<$filename> is not given.
 
 =item C<< $obj->as_gif($filename?) >>
 
-Similar to C<as_png>, bug generate a GIF-format image.
+Similar to C<as_png>, bug generate a GIF-format image. Note that, for many graphviz installations, C<gif> support is disabled by default. So you'll probably see the following error message:
+
+    Format: "gif" not recognized. Use one of: bmp canon cmap cmapx cmapx_np
+        dia dot fig gtk hpgl ico imap imap_np ismap jpe jpeg jpg mif mp
+        pcl pdf pic plain plain-ext png ps ps2 svg svgz tif tiff vml
+        vmlz vtx xdot xlib
 
 =item C<< $obj->as_dom() >>
 
