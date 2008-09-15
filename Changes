@@ -1,7 +1,7 @@
 Change Log for UML::Class::Simple
 
 =version 0.16 (Sep 13, 2008)
-* die if run3('dot ...') failed.
+* throws an exception when the dot program complaints and returns non-zero status (this fixed RT #39179).
 * added a hint to t/basic.t that the invalid argument warning can be safely ignored.
 
 =version 0.15 (Aug 31, 2008)
