@@ -126,7 +126,14 @@ METHODS
         data when $filename is not given.
 
     "$obj->as_gif($filename?)"
-        Similar to "as_png", bug generate a GIF-format image.
+        Similar to "as_png", bug generate a GIF-format image. Note that, for
+        many graphviz installations, "gif" support is disabled by default.
+        So you'll probably see the following error message:
+
+            Format: "gif" not recognized. Use one of: bmp canon cmap cmapx cmapx_np
+                dia dot fig gtk hpgl ico imap imap_np ismap jpe jpeg jpg mif mp
+                pcl pdf pic plain plain-ext png ps ps2 svg svgz tif tiff vml
+                vmlz vtx xdot xlib
 
     "$obj->as_dom()"
         Return the internal DOM tree used to generate dot and png. The
