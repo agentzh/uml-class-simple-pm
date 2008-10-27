@@ -14,6 +14,8 @@ fast.*\.yml$
 \.bak$
 ^cover_db
 '
+.git
+.gitignore
 ^backup
 bin/.*\.dat
 ^t/cover-

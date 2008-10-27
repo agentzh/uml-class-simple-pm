@@ -1,3 +1,5 @@
+t/class-accessor-grouped.t
+t/data/TestClassAccessorGrouped.pm
 lib/UML/Class/Simple.pm
 t/preload-bug.t
 t/basic.t

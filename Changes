@@ -1,5 +1,9 @@
 Change Log for UML::Class::Simple
 
+=version 0.17 (Oct 27, 2008)
+* applied the patch from Dave Howorth for the Class::Accessor::Grouped support.
+* added some tests for it.
+
 =version 0.16 (Sep 13, 2008)
 * throws an exception when the dot program complaints and returns non-zero status (this fixed RT #39179).
 * added a hint to t/basic.t that the invalid argument warning can be safely ignored.

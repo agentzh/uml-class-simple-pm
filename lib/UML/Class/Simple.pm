@@ -4,7 +4,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-our $VERSION = '0.16';
+our $VERSION = '0.17';
 
 #use Smart::Comments;
 use Carp qw(carp confess);
@@ -339,7 +339,10 @@ sub _build_dom {
             name => $pkg, methods => [],
             properties => [], subclasses => [],
         };
-        my $from_class_accessor = $pkg->isa('Class::Accessor') || $pkg->isa('Class::Accessor::Fast');
+        my $from_class_accessor =
+            $pkg->isa('Class::Accessor') ||
+            $pkg->isa('Class::Accessor::Fast') ||
+            $pkg->isa('Class::Accessor::Grouped');
         #accessor_name_for
 
         # If you want to gather only the functions defined in
@@ -385,7 +388,8 @@ sub _build_dom {
                 if (! $self->{inherited_methods}) {
                     my $source_name =  Devel::Peek::CvGV($method->[3]);
                     $source_name =~ s/^\*//;
-                    next if $method->[0] ne $source_name;
+                    next if $method->[0] ne $source_name and
+                        $source_name !~ /^Class::Accessor::Grouped::__ANON__/;
                 }
                 $method = $method->[2];
                 next if $public_only && $method =~ /^_/o;
@@ -696,7 +700,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.16 released by September 13, 2008.
+This document describes C<UML::Class::Simple> 0.17 released by October 27, 2008.
 
 =head1 SYNOPSIS
 
@@ -745,7 +749,8 @@ figures themselves or provide any specs other than the source code of
 their own libraries that they want to depict. This module does all the
 jobs for them! :)
 
-Methods created on-the-fly (in BEGIN or some such) can be inspected. Accessors created by modules like L<Class::Accessor> and L<Class::Accessor::Fast> are recognized as "properties" rather than "methods". Intelligent distingishing between Perl methods and properties other than that is not provided.
+Methods created on-the-fly (in BEGIN or some such) can be inspected. Accessors created by modules L<Class::Accessor>, L<Class::Accessor::Fast>, and
+L<Class::Accessor::Grouped> are recognized as "properties" rather than "methods". Intelligent distingishing between Perl methods and properties other than that is not provided.
 
 You know, I was really impressed by the outputs of L<UML::Sequence>, so I
 decided to find something to (automatically) get pretty class diagrams
@@ -1001,7 +1006,7 @@ Note that it's recommended to use the C<cpan> utility to install CPAN modules.
 =item *
 
 It's pretty hard to distinguish perl methods from properties (actually they're both
-implemented by subs in perl). Currently only accessors created by L<Class::Accessor::Fast> are provided. (Thanks to the patch from Adam Lounds!) If you have any other good idea on this issue, please drop me a line ;)
+implemented by subs in perl). Currently only accessors created by L<Class::Accessor>, L<Class::Accessor::Fast>, and L<Class::Accessor::Grouped> are provided. (Thanks to the patches from Adam Lounds and Dave Howorth!) If you have any other good idea on this issue, please drop me a line ;)
 
 =item *
 
