@@ -4,7 +4,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 
 #use Smart::Comments;
 use Carp qw(carp confess);
@@ -351,7 +351,8 @@ sub _build_dom {
         my $methods = Class::Inspector->methods($pkg, 'expanded');
         if ($methods and ref($methods) eq 'ARRAY') {
             if ($from_class_accessor) {
-                my %functions = map { $_->[2] => 1 } @$methods; # create hash from array
+                my $i = 0;
+                my %functions = map { $_->[2] => $i++ } @$methods; # create hash from array
                 ### %functions
                 #my @accessors = map { /^_(.*)_accessor$/; $1 } keys %functions;
                 ### @accessors
@@ -362,9 +363,13 @@ sub _build_dom {
                     if ($meth =~ /^_(.*)_accessor$/) {
                         my $accessor = $1;
                         if (exists $functions{$accessor}) {
+                            if ($self->{inherited_methods} or
+                                $methods->[$functions{$accessor}]->[1] eq $pkg) {
+                                push @{ $classes[-1]->{properties} }, $accessor;
+                            }
                             delete $functions{$accessor};
                             delete $functions{"_${accessor}_accessor"};
-                            push @{ $classes[-1]->{properties} }, $accessor;
+                            #push @{ $classes[-1]->{properties} }, $accessor;
                         }
                         next;
                     }
@@ -373,7 +378,11 @@ sub _build_dom {
                             my $accessor = $1;
                             delete $functions{$meth};
                             if (!$accessors{$accessor}) {
-                                push @{ $classes[-1]->{properties} }, $accessor;
+                                #push @{ $classes[-1]->{properties} }, $accessor;
+                                if ($self->{inherited_methods} or
+                                    $methods->[$functions{$accessor}]->[1] eq $pkg) {
+                                     push @{ $classes[-1]->{properties} }, $accessor;
+                                }
                                 $accessors{$accessor} = 1;
                             }
                         }
@@ -388,8 +397,7 @@ sub _build_dom {
                 if (! $self->{inherited_methods}) {
                     my $source_name =  Devel::Peek::CvGV($method->[3]);
                     $source_name =~ s/^\*//;
-                    next if $method->[0] ne $source_name and
-                        $source_name !~ /^Class::Accessor::Grouped::__ANON__/;
+                    next if $method->[0] ne $source_name;
                 }
                 $method = $method->[2];
                 next if $public_only && $method =~ /^_/o;
