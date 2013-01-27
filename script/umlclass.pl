@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 
+# vim:set ft=perl ts=4 sw=4 et fdm=marker:
+
 use strict;
 use warnings;
 
@@ -27,6 +29,9 @@ GetOptions(
     "dot=s"         => \$dot_prog,
     "include|I=s"   => \my @include_paths,
     "exclude|E=s"   => \my @exclude_paths,
+    "no-methods"  => \my $no_methods,
+    "moose-roles"   => \my $moose_roles,
+    "no-inheritance" => \my $no_inheritance,
 ) or help(1);
 
 #warn "include_paths: @include_paths\n";
@@ -112,6 +117,9 @@ $painter->inherited_methods(0) if $without_inherited_methods;
 $painter->size($width, $height) if $width and $height;
 $painter->node_color($node_color) if $node_color;
 #$painter->root_at($root_class) if $root_class;
+$painter->display_methods(0) if $no_methods;
+$painter->moose_roles($moose_roles) if $moose_roles;
+$painter->display_inheritance(0) if $no_inheritance;
 
 my $ext = 'png';
 if ($outfile =~ /\.(\w+)$/) { $ext = lc($1); }
@@ -161,13 +169,23 @@ Options:
     --help
     -h           Print this help.
 
-    -M module    Preload the specified module to runtime.
-                 (multiple -M are supported.)
-
     --include path
     -I path
                  Include *only* the classes that were installed to
                  <path> in the drawing. multiple -I options are supported.
+
+    -M module    Preload the specified module to runtime.
+                 (multiple -M are supported.)
+
+    --moose-roles
+                 Show relationships between Moose::Role packages
+                 and their consumers in the output.
+
+    --no-methods
+                 Do not show any method names at all in the output.
+
+    --no-inheritance
+                 Do not draw class inheritance relationships in the output.
 
     --out outfile
     -o outfile   Specify the output file name. it can be one of the
@@ -287,6 +305,10 @@ while plotting the class diagram. So it's common practice to specify
 the C<--without-inherited-methods> option like this:
 
   $ umlclass.pl --without-inherited-methods -o uml.png -r lib
+
+If you also add C<--moose-roles>, extra edges will appear in the
+graph, in an alternate color, representing the relationships between roles
+and their consumers.
 
 =head2 Draw Alias's PPI
 
@@ -429,6 +451,15 @@ Multiple C<-M> options are accepted. For instance:
 
     $ umlclass.pl -M Foo -M Bar::Baz -p "Class::"
 
+=item --no-methods
+
+Don't display method names in the output.
+
+=item --no-inheritance
+
+Don't show the inheritance relationships in the output.  Not terribly useful
+unless you are using C<Moose> and asking for C<--moose-roles>.
+
 =item --out outfile
 
 =item -o outfile
@@ -475,6 +506,16 @@ Shows public methods only.
 =item -r
 
 Processes subdirectories of input directories recursively.
+
+=item --moose-roles
+
+If a package appears to be a L<Moose::Role>, determine which other
+packages consume that role, and add that information to the graph
+in a different color from the inheritance hierarchy.  Depending on
+the particular input classes and your personal artistic tastes,
+this may substantially alter the usefulness and/or cleanliness of
+the resulting diagram.  For large package hierarchies, it is
+recommended to combine this with B<--no-inheritance>.
 
 =item --size
 

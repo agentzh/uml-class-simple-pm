@@ -1,6 +1,14 @@
 Change Log for UML::Class::Simple
 
 =version 0.19 (January 26, 2013)
+* feature: umlclass.pl: added option --moose-roles to display relationships
+  between Moose::Role packages and their consumers with different
+  colored edges in the output. thanks Tony Monroe for the patch.
+* feature: umlclass.pl: added option --no-methods to avoid displaying
+  the class methods in the output. thanks Tony Monroe for the patch.
+* feature: umlclass.pl: added option --no-inheritance to avoid displaying
+  class inheritance relationships in the output. thanks Tony Monroe
+  for the patch.
 * upgraded the bundled Module::Install to its latest 1.06 release.
 * updated docs for the new code repository on GitHub.
 * updated the English name of the 1st author.

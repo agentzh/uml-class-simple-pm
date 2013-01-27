@@ -91,9 +91,9 @@ is_deeply $dom, {
                 any as_dom as_dot as_gif as_png as_xmi
                 can_run carp
                 classes_from_files classes_from_runtime
-                confess dot_prog
+                confess display_inheritance display_methods dot_prog
                 exclude_by_paths grep_by_paths
-                inherited_methods
+                inherited_methods moose_roles
                 new node_color public_only
                 run3 set_dom set_dot size
                         )],
@@ -116,9 +116,9 @@ is_deeply $dom, {
                 any as_dom as_dot as_gif as_png as_xmi
                 can_run carp
                 classes_from_files classes_from_runtime
-                confess dot_prog
+                confess display_inheritance display_methods dot_prog
                 exclude_by_paths grep_by_paths
-                inherited_methods
+                inherited_methods moose_roles
                 new node_color public_only
                 run3 set_dom set_dot size
                         )],
@@ -165,9 +165,9 @@ is_deeply $dom, {
                 as_dom as_dot as_gif as_png as_xmi
                 can_run
                 classes_from_files classes_from_runtime
-                dot_prog
+                display_inheritance display_methods dot_prog
                 exclude_by_paths grep_by_paths
-                inherited_methods
+                inherited_methods moose_roles
                 new node_color public_only
                 set_dom set_dot size
                         )],

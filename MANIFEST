@@ -48,3 +48,10 @@ inc/Module/Install/Can.pm
 inc/Module/Install/Fetch.pm
 MYMETA.json
 MYMETA.yml
+t/Moouseish/Bar.pm
+t/Moouseish/Baz.pm
+t/Moouseish/Foo.pm
+t/Moouseish/Garply.pm
+t/Moouseish/Quux.pm
+t/Moouseish/Zot.pm
+t/moose.t

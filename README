@@ -218,6 +218,19 @@ PROPERTIES
         Set/get the background color for the class nodes. It defaults to
         '#f1e1f4'.
 
+    "$obj->moose_roles($bool)"
+        When this property is set to true values, then relationships between
+        Moose::Role packages and their consumers will be drawn in the
+        output. Default to false.
+
+    "$obj->display_methods($bool)"
+        When this property is set to false, then class methods will not be
+        shown in the output. Default to true.
+
+    "$obj->display_inheritance($bool)"
+        When this property is set to false, then the class inheritance
+        relationship will not be drawn in the output. Default to false.
+
 INSTALLATION
     Please download and intall a recent Graphviz release from its home:
 
