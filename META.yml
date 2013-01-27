@@ -1,14 +1,15 @@
 ---
 abstract: 'Render simple UML class diagrams, by loading the code'
 author:
-  - 'Agent Zhang C<< <agentzh@yahoo.cn> >>,'
+  - "Yichun \"agentzh\" Zhang (章亦春) C<< <agentzh@gmail.com> >>, CloudFlare Inc."
 build_requires:
-  ExtUtils::MakeMaker: 6.42
+  ExtUtils::MakeMaker: 6.59
   Test::More: 0
 configure_requires:
-  ExtUtils::MakeMaker: 6.42
+  ExtUtils::MakeMaker: 6.59
 distribution_type: module
-generated_by: 'Module::Install version 0.88'
+dynamic_config: 1
+generated_by: 'Module::Install version 1.06'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html

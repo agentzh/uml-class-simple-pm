@@ -1102,17 +1102,9 @@ I have a dream to keep sending out commit bits like Audrey Tang. ;-)
 
 =head1 AUTHORS
 
-=over
-
-=item *
-
 Yichun "agentzh" Zhang (章亦春) C<< <agentzh@gmail.com> >>, CloudFlare Inc.
 
-=item *
-
 Maxim Zenin C<< <max@foggy.ru> >>.
-
-=back
 
 =head1 COPYRIGHT
 

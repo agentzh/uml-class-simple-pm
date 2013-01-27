@@ -49,3 +49,5 @@ inc/Module/Install/Win32.pm
 inc/Module/Install/Can.pm
 inc/Module/Install/Fetch.pm
 inc/Module/AutoInstall.pm
+MYMETA.json
+MYMETA.yml

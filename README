@@ -298,10 +298,10 @@ ACKNOWLEDGEMENT
     motivated me to turn the original hack into this CPAN module. ;-)
 
 SOURCE CONTROL
-    You can always grab the latest version from the following Subversion
+    You can always grab the latest version from the following GitHub
     repository:
 
-    <http://svn.berlios.de/svnroot/repos/umlclass/>
+    <https://github.com/agentzh/uml-class-simple-pm>
 
     It has anonymous access to all.
 
@@ -309,11 +309,13 @@ SOURCE CONTROL
     I have a dream to keep sending out commit bits like Audrey Tang. ;-)
 
 AUTHORS
-    Agent Zhang "<agentzh@yahoo.cn>", Maxim Zenin "<max@foggy.ru>".
+    Yichun "agentzh" Zhang (章亦春) "<agentzh@gmail.com>", CloudFlare Inc.
+
+    Maxim Zenin "<max@foggy.ru>".
 
 COPYRIGHT
-    Copyright (c) 2006, 2007, 2008 by Agent Zhang. Copyright (c) 2007, 2008
-    by Maxim Zenin.
+    Copyright (c) 2006-2013 by Yichun Zhang (章亦春), CloudFlare Inc. Copyright
+    (c) 2007-2013 by Maxim Zenin.
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as perl itself, either Artistic and GPL.
