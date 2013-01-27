@@ -708,7 +708,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.17 released by October 27, 2008.
+This document describes C<UML::Class::Simple> 0.18 released by May 20, 2009.
 
 =head1 SYNOPSIS
 

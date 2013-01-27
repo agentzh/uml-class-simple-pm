@@ -13,7 +13,6 @@ fast.*\.yml$
 \.old$
 \.bak$
 ^cover_db
-'
 .git
 .gitignore
 ^backup

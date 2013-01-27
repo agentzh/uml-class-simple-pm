@@ -3,8 +3,8 @@ NAME
     code
 
 VERSION
-    This document describes "UML::Class::Simple" 0.17 released by October
-    27, 2008.
+    This document describes "UML::Class::Simple" 0.18 released by May 20,
+    2009.
 
 SYNOPSIS
         use UML::Class::Simple;

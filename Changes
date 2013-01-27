@@ -1,5 +1,9 @@
 Change Log for UML::Class::Simple
 
+=version 0.18 (May 20, 2008)
+* applied another patch from Dave Howorth for the Class::Accessor::Grouped support.
+* updated the bundled Module::Install module to the best one on CPAN, i.e., the version 0.88.
+
 =version 0.17 (Oct 27, 2008)
 * applied the patch from Dave Howorth for the Class::Accessor::Grouped support.
 * added some tests for it.

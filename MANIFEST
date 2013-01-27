@@ -1,3 +1,5 @@
+inc/Module/Install/Scripts.pm
+t/data/TestClassAccessorGroupedInheritance.pm
 t/class-accessor-grouped.t
 t/data/TestClassAccessorGrouped.pm
 lib/UML/Class/Simple.pm
