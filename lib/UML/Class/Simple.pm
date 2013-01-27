@@ -433,21 +433,19 @@ sub _build_dom {
                 #warn "!!!! ", join ' ', @{"${_}::ISA"};
                 any { $_ eq $pkg } @{"${_}::ISA"};
             } @$subclasses;
+
             if (@child) {
                 $classes[-1]->{subclasses} = \@child;
             }
         }
 
-        if (Class::Inspector->function_exists($pkg, 'meta'))
-        {
+        if (Class::Inspector->function_exists($pkg, 'meta')) {
             # at least Class::MOP
             my $meta = $pkg->meta();
-            if ($meta->can('consumers'))
-            {
+            if ($meta->can('consumers')) {
                 # Something like Moose::Meta::Role
                 my @consumers = $meta->consumers();
-                if (@consumers)
-                {
+                if (@consumers) {
                     $classes[-1]->{'consumers'} =  [ @consumers ];
                 }
             }
