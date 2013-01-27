@@ -702,6 +702,8 @@ _EOC_
 1;
 __END__
 
+=encoding utf-8
+
 =head1 NAME
 
 UML::Class::Simple - Render simple UML class diagrams, by loading the code
@@ -1088,10 +1090,10 @@ motivated me to turn the original hack into this CPAN module. ;-)
 
 =head1 SOURCE CONTROL
 
-You can always grab the latest version from the following Subversion
+You can always grab the latest version from the following GitHub
 repository:
 
-L<http://svn.berlios.de/svnroot/repos/umlclass/>
+L<https://github.com/agentzh/uml-class-simple-pm>
 
 It has anonymous access to all.
 
@@ -1100,13 +1102,22 @@ I have a dream to keep sending out commit bits like Audrey Tang. ;-)
 
 =head1 AUTHORS
 
-Agent Zhang C<< <agentzh@yahoo.cn> >>,
+=over
+
+=item *
+
+Yichun "agentzh" Zhang (章亦春) C<< <agentzh@gmail.com> >>, CloudFlare Inc.
+
+=item *
+
 Maxim Zenin C<< <max@foggy.ru> >>.
+
+=back
 
 =head1 COPYRIGHT
 
-Copyright (c) 2006, 2007, 2008 by Agent Zhang.
-Copyright (c) 2007, 2008 by Maxim Zenin.
+Copyright (c) 2006-2013 by Yichun Zhang (章亦春), CloudFlare Inc.
+Copyright (c) 2007-2013 by Maxim Zenin.
 
 This library is free software; you can redistribute it and/or modify it under
 the same terms as perl itself, either Artistic and GPL.
