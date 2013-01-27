@@ -23,7 +23,7 @@ requires        ('XML::LibXML');
 
 build_requires  ('Test::More');
 
-auto_install();
+#auto_install();
 WriteAll();
 
 END {
