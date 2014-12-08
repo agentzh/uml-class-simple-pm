@@ -1,5 +1,8 @@
 Change Log for UML::Class::Simple
 
+=version 0.20 (December 7, 2014)
+* doc: fixed broken links to the sample images.
+
 =version 0.19 (January 26, 2013)
 * feature: umlclass.pl: added option --moose-roles to display relationships
   between Moose::Role packages and their consumers with different

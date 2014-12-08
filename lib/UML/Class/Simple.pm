@@ -6,7 +6,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-our $VERSION = '0.19';
+our $VERSION = '0.20';
 
 #use Smart::Comments;
 use Carp qw(carp confess);
@@ -768,7 +768,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.19 released by 26 January 2013.
+This document describes C<UML::Class::Simple> 0.20 released by 7 December 2014.
 
 =head1 SYNOPSIS
 

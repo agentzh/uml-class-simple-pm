@@ -25,7 +25,7 @@ Table of Contents
 
 # VERSION
 
-This document describes `UML::Class::Simple` 0.19 released by 26 January 2013.
+This document describes `UML::Class::Simple` 0.20 released by 7 December 2014.
 
 # SYNOPSIS
 
