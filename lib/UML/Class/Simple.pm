@@ -835,11 +835,11 @@ documentation of L<umlclass.pl> for details.
 
 =item PPI
 
-L<http://perlcabal.org/agent/images/ppi_small.png>
+L<https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/ppi_small.png>
 
 =begin html
 
-<img src="http://perlcabal.org/agent/images/ppi_small.png">
+<img src="https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/ppi_small.png">
 
 =end html
 
@@ -847,11 +847,11 @@ L<http://perlcabal.org/agent/images/ppi_small.png>
 
 =item Moose
 
-L<http://perlcabal.org/agent/images/moose_small.png>
+L<https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/moose_small.png>
 
 =begin html
 
-<img src="http://perlcabal.org/agent/images/moose_small.png">
+<img src="https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/moose_small.png">
 
 =end html
 
@@ -859,11 +859,11 @@ L<http://perlcabal.org/agent/images/moose_small.png>
 
 =item FAST
 
-L<http://perlcabal.org/agent/images/fast.png>
+L<https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/fast.png>
 
 =begin html
 
-<img src="http://perlcabal.org/agent/images/fast.png">
+<img src="https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/fast.png">
 
 =end html
 

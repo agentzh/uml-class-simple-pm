@@ -92,30 +92,30 @@ documentation of [umlclass.pl](https://metacpan.org/pod/umlclass.pl) for details
 
 - PPI
 
-    [http://perlcabal.org/agent/images/ppi\_small.png](http://perlcabal.org/agent/images/ppi_small.png)
+    [https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/ppi\_small.png](https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/ppi_small.png)
 
     <div>
-            <img src="http://perlcabal.org/agent/images/ppi_small.png">
+            <img src="https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/ppi_small.png">
     </div>
 
     (See also `samples/ppi_small.png` in the distribution.)
 
 - Moose
 
-    [http://perlcabal.org/agent/images/moose\_small.png](http://perlcabal.org/agent/images/moose_small.png)
+    [https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/moose\_small.png](https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/moose_small.png)
 
     <div>
-            <img src="http://perlcabal.org/agent/images/moose_small.png">
+            <img src="https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/moose_small.png">
     </div>
 
     (See also `samples/moose_small.png` in the distribution.)
 
 - FAST
 
-    [http://perlcabal.org/agent/images/fast.png](http://perlcabal.org/agent/images/fast.png)
+    [https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/fast.png](https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/fast.png)
 
     <div>
-            <img src="http://perlcabal.org/agent/images/fast.png">
+            <img src="https://raw.githubusercontent.com/agentzh/uml-class-simple-pm/master/samples/fast.png">
     </div>
 
     (See also `samples/fast.png` in the distribution.)
