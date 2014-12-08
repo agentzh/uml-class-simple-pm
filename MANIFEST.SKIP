@@ -19,4 +19,5 @@ fast.*\.yml$
 bin/.*\.dat
 ^t/cover-
 \.tar\.gz$
-preload\.yml
+^preload\.yml$
+^moouseish\.yml$

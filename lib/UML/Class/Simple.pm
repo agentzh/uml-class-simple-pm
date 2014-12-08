@@ -1180,8 +1180,8 @@ Maxim Zenin C<< <max@foggy.ru> >>.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2006-2013 by Yichun Zhang (章亦春), CloudFlare Inc.
-Copyright (c) 2007-2013 by Maxim Zenin.
+Copyright (c) 2006-2014 by Yichun Zhang (章亦春), CloudFlare Inc.
+Copyright (c) 2007-2014 by Maxim Zenin.
 
 This library is free software; you can redistribute it and/or modify it under
 the same terms as perl itself, either Artistic and GPL.

@@ -82,3 +82,7 @@ demo/RestyCheck/openresty.js
 demo/RestyCheck/upload
 demo/*/script/upload
 metamodel
+moouseish.yml
+noinheritance.dot
+nomethods.dot
+rolesonly.dot

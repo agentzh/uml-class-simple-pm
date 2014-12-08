@@ -32,7 +32,7 @@ samples/ppi_small.png
 samples/fast.png
 Makefile.PL
 MANIFEST.SKIP
-README
+README.md
 Changes
 MANIFEST
 META.yml
