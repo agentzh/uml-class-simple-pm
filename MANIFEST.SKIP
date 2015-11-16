@@ -21,3 +21,4 @@ bin/.*\.dat
 \.tar\.gz$
 ^preload\.yml$
 ^moouseish\.yml$
+^MYMETA\.
