@@ -24,6 +24,7 @@ requires        ('XML::LibXML');
 build_requires  ('Test::More');
 
 #auto_install();
+repository 'http://github.com/agentzh/uml-class-simple-pm';
 WriteAll();
 
 END {
