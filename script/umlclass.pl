@@ -212,7 +212,7 @@ Options:
     --without-inherited-methods
                  Do not show methods from parent classes.
 
-Report bugs or wishlist to Agent Zhang <agentzh\@gmail.com>.
+Report bugs or wishlist to Yichun Zhang <agentzh\@gmail.com>.
 _EOC_
     exit($code);
 }
@@ -562,12 +562,12 @@ ancestors and subclasses will be drawn. (This is suggested by Christopher Malon.
 
 =head1 AUTHORS
 
-Agent Zhang E<lt>agentzh@gmail.comE<gt>,
+Yichun Zhang E<lt>agentzh@gmail.comE<gt>,
 Maxim Zenin E<lt>max@foggy.ruE<gt>
 
 =head1 COPYRIGHT
 
-Copyright 2006 by Agent Zhang. All rights reserved.
+Copyright 2006-2017 by Yichun Zhang. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify it under
 the same terms as perl itself.
