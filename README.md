@@ -25,7 +25,7 @@ Table of Contents
 
 # VERSION
 
-This document describes `UML::Class::Simple` 0.21 released by 17 December 2016.
+This document describes `UML::Class::Simple` 0.22 released by 18 December 2016.
 
 # SYNOPSIS
 

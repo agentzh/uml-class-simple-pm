@@ -35,4 +35,4 @@ requires:
 resources:
   license: http://dev.perl.org/licenses/
   repository: http://github.com/agentzh/uml-class-simple-pm
-version: '0.21'
+version: '0.22'
