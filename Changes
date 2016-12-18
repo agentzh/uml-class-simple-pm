@@ -1,5 +1,8 @@
 Change Log for UML::Class::Simple
 
+=version 0.21 (December 17, 2016)
+* feature: added support for SVG output.
+
 =version 0.20 (December 7, 2014)
 * doc: fixed broken links to the sample images.
 

@@ -25,7 +25,7 @@ Table of Contents
 
 # VERSION
 
-This document describes `UML::Class::Simple` 0.20 released by 7 December 2014.
+This document describes `UML::Class::Simple` 0.21 released by 17 December 2016.
 
 # SYNOPSIS
 
@@ -172,6 +172,11 @@ All these subroutines are exported by default.
 - `$obj->as_png($filename?)`
 
     Generate PNG image file when `$filename` is given. It returns
+    binary data when `$filename` is not given.
+
+- `$obj->as_svg($filename?)`
+
+    Generate SVG image file when `$filename` is given. It returns
     binary data when `$filename` is not given.
 
 - `$obj->as_gif($filename?)`

@@ -6,7 +6,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-our $VERSION = '0.20';
+our $VERSION = '0.21';
 
 #use Smart::Comments;
 use Carp qw(carp confess);
@@ -773,7 +773,7 @@ UML::Class::Simple - Render simple UML class diagrams, by loading the code
 
 =head1 VERSION
 
-This document describes C<UML::Class::Simple> 0.20 released by 7 December 2014.
+This document describes C<UML::Class::Simple> 0.21 released by 17 December 2016.
 
 =head1 SYNOPSIS
 
@@ -932,6 +932,11 @@ C<classes_from_runtime> and C<classes_from_files>.
 =item C<< $obj->as_png($filename?) >>
 
 Generate PNG image file when C<$filename> is given. It returns
+binary data when C<$filename> is not given.
+
+=item C<< $obj->as_svg($filename?) >>
+
+Generate SVG image file when C<$filename> is given. It returns
 binary data when C<$filename> is not given.
 
 =item C<< $obj->as_gif($filename?) >>
