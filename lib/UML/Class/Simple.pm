@@ -1179,13 +1179,13 @@ I have a dream to keep sending out commit bits like Audrey Tang. ;-)
 
 =head1 AUTHORS
 
-Yichun "agentzh" Zhang (章亦春) C<< <agentzh@gmail.com> >>, CloudFlare Inc.
+Yichun "agentzh" Zhang (章亦春) C<< <agentzh@gmail.com> >>, OpenResty Inc.
 
 Maxim Zenin C<< <max@foggy.ru> >>.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2006-2014 by Yichun Zhang (章亦春), CloudFlare Inc.
+Copyright (c) 2006-2016 by Yichun Zhang (章亦春), OpenResty Inc.
 Copyright (c) 2007-2014 by Maxim Zenin.
 
 This library is free software; you can redistribute it and/or modify it under

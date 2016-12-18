@@ -1,7 +1,7 @@
 ---
 abstract: 'Render simple UML class diagrams, by loading the code'
 author:
-  - "Yichun \"agentzh\" Zhang (ç« äº¦æ\x98¥) C<< <agentzh@gmail.com> >>, CloudFlare Inc."
+  - "Yichun \"agentzh\" Zhang (ç« äº¦æ\x98¥) C<< <agentzh@gmail.com> >>, OpenResty Inc."
 build_requires:
   ExtUtils::MakeMaker: 6.59
   Test::More: 0
