@@ -272,6 +272,11 @@ sub as_gif {
     $self->_as_image('gif', @_);
 }
 
+sub as_svg {
+    my $self = shift;
+    $self->_as_image('svg', @_);
+}
+
 sub _as_image {
     my ($self, $type, $fname) = @_;
     my $dot = $self->as_dot;

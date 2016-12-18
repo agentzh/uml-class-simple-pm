@@ -140,6 +140,9 @@ elsif ($ext eq 'yml') {
 elsif ($ext eq 'xmi') {
     $painter->as_xmi($outfile);
 }
+elsif ($ext eq 'svg') {
+    $painter->as_svg($outfile);
+}
 else {
     die "error: unknown output file format: $ext\n";
 }
@@ -250,7 +253,14 @@ umlclass.pl - Utility to generate UML class diagrams from Perl source or runtime
 
 =head1 SYNOPSIS
 
+    # generate a PNG file for the Foo module:
     $ umlclass.pl -M Foo -o foo.png -p "^Foo::"
+
+    # generate an SVG image file which is vectorized and super clear:
+    $ umlclass.pl --without-inherited-methods -o foo.svg -r lib/
+
+    # generate the dot source file:
+    $ umlclass.pl -M Foo -o foo.dot
 
     $ umlclass.pl -o bar.gif -p "Bar::|Baz::" lib/Bar.pm lib/*/*.pm
 
@@ -294,7 +304,7 @@ The image obtained is really really large, I won't show it here, but you
 can browse it in your favorite picture browser from
 L<http://perlcabal.org/agent/images/moose_big.png>.
 
-Before trying out these commands yourself, please make sure that you have 
+Before trying out these commands yourself, please make sure that you have
 L<Moose> already installed. (It's also on CPAN, btw.)
 
 =head2 Perl libraries that use Moose
